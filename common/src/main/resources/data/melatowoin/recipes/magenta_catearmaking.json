@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "aba",
+    "bcb",
+    "c c"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:magenta_dye"
+    },
+    "b": {
+      "item": "melatowoin:fabric"
+    },
+    "c": {
+      "item": "melatowoin:plastic"
+    }
+  },
+  "result": {
+    "item": "melatowoin:magentacatears",
+    "count": 1
+  }
+}

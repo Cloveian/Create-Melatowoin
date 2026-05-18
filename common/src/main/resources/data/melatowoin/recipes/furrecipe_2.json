@@ -1,0 +1,14 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "melatowoin:strings"
+    }
+  ],
+  "processingTime": 300,
+  "results": [
+    {
+      "item": "melatowoin:dust"
+    }
+  ]
+}

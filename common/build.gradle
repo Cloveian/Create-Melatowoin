@@ -1,0 +1,14 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+loom {
+    accessWidenerPath = project.file("src/main/resources/melatonin.accesswidener")
+}
+
+dependencies {
+    modImplementation "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // Compile common code against Create Fabric — it bundles Flywheel and Registrate
+    modCompileOnly "com.simibubi.create:create-fabric:${rootProject.create_fabric_version}"
+}

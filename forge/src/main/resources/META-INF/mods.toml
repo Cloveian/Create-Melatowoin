@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="Apache-2.0"
+
+[[mods]]
+    modId="melatonin"
+    version="${version}"
+    displayName="Create: MelatOwOin"
+    description='''
+        Cat ears, chloroform, and other Create-powered chaos.
+    '''
+    logoFile="assets/melatonin/icon.png"
+    authors="Cloveian"
+
+[[dependencies.melatonin]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.melatonin]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.melatonin]]
+    modId="create"
+    mandatory=true
+    versionRange="[0.5.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.melatonin]]
+    modId="architectury"
+    mandatory=true
+    versionRange="[9.2.14,)"
+    ordering="NONE"
+    side="BOTH"

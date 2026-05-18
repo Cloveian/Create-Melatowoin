@@ -1,0 +1,6 @@
+{
+  "implementations": [
+    "fabric",
+    "forge"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "amount": 8100,
+      "fluid": "melatowoin:vinegar"
+    }
+  ],
+  "results": [
+    {
+      "item": "melatowoin:ca"
+    }
+  ]
+}

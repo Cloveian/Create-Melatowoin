@@ -1,0 +1,67 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:white_carpet"
+  },
+  "loops": 10,
+  "results": [
+    {
+      "chance": 120.0,
+      "item": "melatowoin:fabric"
+    },
+    {
+      "chance": 8.0,
+      "item": "minecraft:white_wool"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "melatowoin:fabrics"
+        },
+        {
+          "item": "melatowoin:fur"
+        }
+      ],
+      "results": [
+        {
+          "item": "melatowoin:fabrics"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "melatowoin:fabrics"
+        },
+        {
+          "item": "melatowoin:plastic"
+        }
+      ],
+      "results": [
+        {
+          "item":  "melatowoin:fabrics"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "melatowoin:fabrics"
+        }
+      ],
+      "results": [
+        {
+          "item":  "melatowoin:fabrics"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "melatowoin:fabrics"
+  }
+}

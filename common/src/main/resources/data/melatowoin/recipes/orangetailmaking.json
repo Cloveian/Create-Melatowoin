@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "abc",
+    "bdb",
+    "bba"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:orange_dye"
+    },
+    "b": {
+      "item": "melatowoin:fabric"
+    },
+    "c": {
+      "item": "minecraft:string"
+    },
+    "d": {
+      "item": "melatowoin:plastic"
+    }
+  },
+  "result": {
+    "item": "melatowoin:orangetail",
+    "count": 1
+  }
+}
