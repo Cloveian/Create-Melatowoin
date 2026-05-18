@@ -25,7 +25,7 @@ public class MixinLivingEntityEffects {
      */
     @Inject(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z",
             at = @At("RETURN"))
-    private void melatonin$onEffectAdded(MobEffectInstance effectInstance,
+    private void melatowoin$onEffectAdded(MobEffectInstance effectInstance,
                                           net.minecraft.world.entity.Entity source,
                                           CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue()) return; // effect was not applied
@@ -45,7 +45,7 @@ public class MixinLivingEntityEffects {
      */
     @Inject(method = "removeEffect(Lnet/minecraft/world/effect/MobEffect;)Z",
             at = @At("RETURN"))
-    private void melatonin$onEffectRemoved(net.minecraft.world.effect.MobEffect effect,
+    private void melatowoin$onEffectRemoved(net.minecraft.world.effect.MobEffect effect,
                                             CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue()) return;
 

@@ -20,7 +20,7 @@ public class ForgeVinegarFluid {
 
     public static final RegistryObject<FluidType> TYPE = FLUID_TYPES.register("vinegar",
             () -> new FluidType(FluidType.Properties.create()
-                    .descriptionId("fluid.melatonin.vinegar")
+                    .descriptionId("fluid.melatowoin.vinegar")
                     .canSwim(true)
                     .canDrown(true)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)

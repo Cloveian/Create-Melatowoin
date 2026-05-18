@@ -32,45 +32,9 @@ public class MelatowoinFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityTypes.CYAN_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntityTypes.ORANGE_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));
 
-        // Register custom armor renderers for all cat-ears items
-        FabricCatEarsRenderer helmRenderer = new FabricCatEarsRenderer(true);
-        FabricCatEarsRenderer chestRenderer = new FabricCatEarsRenderer(false);
-
-        ArmorRenderer.register(helmRenderer,
-                ModItems.BLACKCATEARS.get(),
-                ModItems.BLUECATEARS.get(),
-                ModItems.BROWNCATEARS.get(),
-                ModItems.CYANCATEARS.get(),
-                ModItems.GRAYCATEARS.get(),
-                ModItems.GREENCATEARS.get(),
-                ModItems.LIGHTBLUECATEARS.get(),
-                ModItems.LIGHTGRAYCATEARS.get(),
-                ModItems.LIMECATEARS.get(),
-                ModItems.MAGENTACATEARS.get(),
-                ModItems.ORANGECATEARS.get(),
-                ModItems.PINKCATEARS.get(),
-                ModItems.PURPLECATEARS.get(),
-                ModItems.REDCATEARS.get(),
-                ModItems.WHITECATEARS.get(),
-                ModItems.YELLOWCATEARS.get());
-
-        ArmorRenderer.register(chestRenderer,
-                ModItems.BLACKTAIL.get(),
-                ModItems.BLUETAIL.get(),
-                ModItems.BROWNTAIL.get(),
-                ModItems.CYANTAIL.get(),
-                ModItems.GRAYTAIL.get(),
-                ModItems.GREENTAIL.get(),
-                ModItems.LIGHTBLUETAIL.get(),
-                ModItems.LIGHTGRAYTAIL.get(),
-                ModItems.LIMETAIL.get(),
-                ModItems.MAGENTATAIL.get(),
-                ModItems.ORANGETAIL.get(),
-                ModItems.PINKTAIL.get(),
-                ModItems.PURPLETAIL.get(),
-                ModItems.REDTAIL.get(),
-                ModItems.WHITETAIL.get(),
-                ModItems.YELLOWTAIL.get());
+        // Register custom armor renderers for cat ears (HEAD) and tail (LEGS)
+        ArmorRenderer.register(new FabricCatEarsRenderer(true),  ModItems.CAT_EARS.get());
+        ArmorRenderer.register(new FabricCatEarsRenderer(false), ModItems.TAIL.get());
 
         // Register network receiver for Eepy screen packet (S2C)
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, EepyScreenPacket.ID,

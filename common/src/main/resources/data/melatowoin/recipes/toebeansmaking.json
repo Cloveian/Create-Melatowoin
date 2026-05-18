@@ -1,0 +1,30 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": { "item": "melatowoin:socks" },
+  "loops": 3,
+  "transitionalItem": { "item": "melatowoin:socks" },
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:socks" },
+        { "item": "melatowoin:fur" }
+      ],
+      "results": [ { "item": "melatowoin:socks" } ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:socks" },
+        { "item": "melatowoin:plastic" }
+      ],
+      "results": [ { "item": "melatowoin:socks" } ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [ { "item": "melatowoin:socks" } ],
+      "results": [ { "item": "melatowoin:socks" } ]
+    }
+  ],
+  "results": [ { "item": "melatowoin:toe_beans", "chance": 1.0 } ]
+}

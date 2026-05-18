@@ -1,0 +1,30 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": { "item": "melatowoin:headband" },
+  "loops": 3,
+  "transitionalItem": { "item": "melatowoin:headband" },
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:headband" },
+        { "item": "melatowoin:fur" }
+      ],
+      "results": [ { "item": "melatowoin:headband" } ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:headband" },
+        { "item": "melatowoin:plastic" }
+      ],
+      "results": [ { "item": "melatowoin:headband" } ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [ { "item": "melatowoin:headband" } ],
+      "results": [ { "item": "melatowoin:headband" } ]
+    }
+  ],
+  "results": [ { "item": "melatowoin:cat_ears", "chance": 1.0 } ]
+}

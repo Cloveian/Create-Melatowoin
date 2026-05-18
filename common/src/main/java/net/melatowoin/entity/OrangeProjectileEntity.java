@@ -1,8 +1,6 @@
 package net.melatowoin.entity;
 
-import net.melatowoin.registry.ModEffects;
 import net.melatowoin.registry.ModItems;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -33,7 +31,6 @@ public class OrangeProjectileEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         if (result.getEntity() instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.CHANGE.get(), 4000, 0));
             onHitExtra.accept(living);
         }
     }

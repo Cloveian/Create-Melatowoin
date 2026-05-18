@@ -3,6 +3,7 @@ package net.melatowoin;
 import net.melatowoin.event.CommonEventHandlers;
 import net.melatowoin.network.EepyScreenPacket;
 import net.melatowoin.registry.*;
+import net.melatowoin.registry.ModRecipes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class MelatowoinMod {
         ModFluids.register();
         ModBlocks.register();
         ModItems.register();
+        ModRecipes.register();
         ModCreativeTab.register();
         ModGameRules.register();
         EepyScreenPacket.register();

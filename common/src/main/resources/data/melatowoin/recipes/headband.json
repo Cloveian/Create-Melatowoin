@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NNN",
+    "NXN"
+  ],
+  "key": {
+    "N": { "item": "minecraft:iron_nugget" },
+    "X": { "item": "melatowoin:fabric" }
+  },
+  "result": { "item": "melatowoin:headband", "count": 1 }
+}
