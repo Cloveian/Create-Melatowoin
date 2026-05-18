@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "melatowoin:blacktail",
+    "melatowoin:bluetail",
+    "melatowoin:browntail",
+    "melatowoin:cyantail",
+    "melatowoin:graytail",
+    "melatowoin:greentail",
+    "melatowoin:lightbluetail",
+    "melatowoin:lightgraytail",
+    "melatowoin:limetail",
+    "melatowoin:magentatail",
+    "melatowoin:orangetail",
+    "melatowoin:pinktail",
+    "melatowoin:purpletail",
+    "melatowoin:redtail",
+    "melatowoin:whitetail",
+    "melatowoin:yellowtail"
+  ]
+}

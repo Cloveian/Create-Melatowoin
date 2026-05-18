@@ -1,0 +1,15 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "forge:furrystuff"
+    }
+  ],
+  "processingTime": 200,
+  "results": [
+    {
+      "chance": 0.05,
+      "item": "melatowoin:furrycore"
+    }
+  ]
+}

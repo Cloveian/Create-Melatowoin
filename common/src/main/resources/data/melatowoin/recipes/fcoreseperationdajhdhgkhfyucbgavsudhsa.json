@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "melatowoin:furrycore"
+    },
+    {
+      "amount": 20250,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "amount": 8100,
+      "fluid": "melatowoin:bleach"
+    },
+    {
+      "item": "melatowoin:unpurefurryness"
+    }
+  ]
+}

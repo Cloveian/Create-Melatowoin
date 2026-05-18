@@ -1,0 +1,16 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "melatowoin:dust"
+    },
+    {
+      "item": "melatowoin:plastic"
+    }
+  ],
+  "results": [
+    {
+      "item": "melatowoin:fur"
+    }
+  ]
+}

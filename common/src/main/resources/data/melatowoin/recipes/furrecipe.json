@@ -1,0 +1,14 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "minecraft:white_carpet"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "item": "melatowoin:strings"
+    }
+  ]
+}
