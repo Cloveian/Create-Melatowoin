@@ -6,6 +6,7 @@ import net.melatowoin.MelatowoinMod;
 import net.melatowoin.entity.OrangeProjectileEntity;
 import net.melatowoin.fabric.event.FabricEventHandlers;
 import net.melatowoin.fabric.fluid.FabricFluids;
+import net.melatowoin.item.OrangeEquipHelper;
 
 public class MelatowoinFabric implements ModInitializer {
     @Override
@@ -18,7 +19,8 @@ public class MelatowoinFabric implements ModInitializer {
         // Register server-side event handlers
         FabricEventHandlers.register();
 
-        // If Accessories is installed, curse hat and belt slots on orange sauce hit
+        // Default: equip in armor slots; override with Accessories priority logic if present
+        OrangeProjectileEntity.onHitExtra = OrangeEquipHelper::defaultEquip;
         if (FabricLoader.getInstance().isModLoaded("accessories")) {
             OrangeProjectileEntity.onHitExtra = AccessoriesSauceHelper::equipEarsAndTail;
         }

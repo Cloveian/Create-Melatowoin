@@ -2,7 +2,13 @@
   "required": true,
   "package": "net.melatowoin.forge.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "MixinStepSound",
+    "MixinContainerGameEvent"
+  ],
+  "client": [
+    "MixinChestSound"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

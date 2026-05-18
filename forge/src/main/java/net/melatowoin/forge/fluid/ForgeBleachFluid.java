@@ -24,7 +24,7 @@ public class ForgeBleachFluid {
 
     public static final RegistryObject<FluidType> TYPE = FLUID_TYPES.register("bleach",
             () -> new FluidType(FluidType.Properties.create()
-                    .descriptionId("fluid.melatonin.bleach")
+                    .descriptionId("fluid.melatowoin.bleach")
                     .canSwim(true)
                     .canDrown(true)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)

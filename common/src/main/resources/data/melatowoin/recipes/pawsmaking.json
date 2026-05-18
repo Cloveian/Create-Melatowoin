@@ -1,0 +1,30 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": { "item": "melatowoin:mittens" },
+  "loops": 3,
+  "transitionalItem": { "item": "melatowoin:mittens" },
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:mittens" },
+        { "item": "melatowoin:fur" }
+      ],
+      "results": [ { "item": "melatowoin:mittens" } ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        { "item": "melatowoin:mittens" },
+        { "item": "melatowoin:plastic" }
+      ],
+      "results": [ { "item": "melatowoin:mittens" } ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [ { "item": "melatowoin:mittens" } ],
+      "results": [ { "item": "melatowoin:mittens" } ]
+    }
+  ],
+  "results": [ { "item": "melatowoin:paws", "chance": 1.0 } ]
+}

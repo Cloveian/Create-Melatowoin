@@ -7,5 +7,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "melatonin"
+rootProject.name = "melatowoin"
 include("common", "fabric", "forge")

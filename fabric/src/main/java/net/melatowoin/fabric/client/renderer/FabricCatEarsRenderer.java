@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.melatowoin.client.model.CatEarModel;
 import net.melatowoin.client.model.TailModel;
-import net.melatowoin.item.CatEarsArmorItem;
+import net.melatowoin.item.DyeableEquipmentItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -46,7 +46,7 @@ public class FabricCatEarsRenderer implements ArmorRenderer {
                        int light, HumanoidModel<LivingEntity> contextModel) {
         initModels();
 
-        if (!(stack.getItem() instanceof CatEarsArmorItem armorItem)) return;
+        if (!(stack.getItem() instanceof DyeableEquipmentItem armorItem)) return;
 
         matrices.pushPose();
         if (isHelmet) {

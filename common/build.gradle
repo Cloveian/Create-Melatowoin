@@ -3,7 +3,7 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = project.file("src/main/resources/melatonin.accesswidener")
+    accessWidenerPath = project.file("src/main/resources/melatowoin.accesswidener")
 }
 
 dependencies {
