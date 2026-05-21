@@ -40,20 +40,23 @@ public class TailModel extends Model {
         PartDefinition root = mesh.getRoot();
 
         // Tail pivot at the lower back of the body.
-        // This model is rendered after contextModel.body.translateAndRotate(), so:
-        //   Y=0 is the neck/top of body, Y=12 is the hips.
-        //   Z=2 is the back face of the body cube (addBox -2 to +2 in Z).
-        // The tail box extends from the pivot outward in +Z (behind the player),
-        // tilted slightly upward via a small negative X rotation.
+        // Rendered after contextModel.body.translateAndRotate():
+        //   Y=0 = neck, Y=12 = hips, Z+ = behind the player.
+        //
+        // Two cubes share the same pivot and rotation, each covering a different
+        // UV region of the 64×64 texture so EquipmentColorRenderer can tint them
+        // independently in two passes:
+        //   texOffs(0,  0): full-length body (14 deep) → tail_layer1.png (main color)
+        //   texOffs(0, 18): shorter inner layer (12 deep, offset +2 in Z) → tail_layer2.png (accent color)
         root.addOrReplaceChild("tail",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-2, -2, 0, 4, 4, 12, new CubeDeformation(-0.3f))
-                        .texOffs(0, 16)
-                        .addBox(-2, -2, 0, 4, 4, 12, new CubeDeformation(-0.1f)),
+                        .addBox(-2, -2, -3, 4, 4, 14, new CubeDeformation(-0.3f))
+                        .texOffs(0, 18)
+                        .addBox(-2, -2, -1, 4, 4, 12, new CubeDeformation(-0.1f)),
                 PartPose.offsetAndRotation(0, 11, 1, -0.35f, 0, 0));
 
-        return LayerDefinition.create(mesh, 32, 32);
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     /**

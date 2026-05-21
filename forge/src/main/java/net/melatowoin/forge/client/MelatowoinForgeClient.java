@@ -3,16 +3,23 @@ package net.melatowoin.forge.client;
 import dev.architectury.networking.NetworkManager;
 import net.melatowoin.MelatowoinMod;
 import net.melatowoin.client.model.CatEarModel;
+import net.melatowoin.client.model.PawsModel;
 import net.melatowoin.client.model.TailModel;
+import net.melatowoin.client.model.ToeBeansModel;
+import net.melatowoin.client.AccessoriesSlotHelper;
 import net.melatowoin.client.screen.EepyScreen;
+import io.wispforest.accessories.api.AccessoriesCapability;
 import net.melatowoin.forge.client.renderer.CatEarsLayer;
+import net.melatowoin.item.DyeableEquipmentItem;
 import net.melatowoin.network.EepyScreenPacket;
 import net.melatowoin.registry.ModEntityTypes;
+import net.melatowoin.registry.ModItems;
 import net.minecraftforge.fml.ModList;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +35,19 @@ public class MelatowoinForgeClient {
     public static void onClientSetup(FMLClientSetupEvent event) {
         if (ModList.get().isLoaded("accessories")) {
             AccessoriesForgeIntegration.registerRenderers();
+            AccessoriesSlotHelper.findPawsInAccessories = player -> {
+                var cap = AccessoriesCapability.get(player);
+                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var container = cap.getContainers().get("hand");
+                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var stacks = container.getAccessories();
+                for (int i = 0; i < stacks.getContainerSize(); i++) {
+                    var s = stacks.getItem(i);
+                    if (s.getItem() instanceof DyeableEquipmentItem d
+                            && d.getEquipType() == DyeableEquipmentItem.EquipType.PAWS) return s;
+                }
+                return net.minecraft.world.item.ItemStack.EMPTY;
+            };
         }
 
         // Register Eepy screen network packet receiver (S2C)
@@ -52,8 +72,23 @@ public class MelatowoinForgeClient {
 
     @SubscribeEvent
     public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(CatEarModel.LAYER_LOCATION, CatEarModel::createBodyLayer);
-        event.registerLayerDefinition(TailModel.LAYER_LOCATION, TailModel::createBodyLayer);
+        event.registerLayerDefinition(CatEarModel.LAYER_LOCATION,   CatEarModel::createBodyLayer);
+        event.registerLayerDefinition(TailModel.LAYER_LOCATION,     TailModel::createBodyLayer);
+        event.registerLayerDefinition(PawsModel.LAYER_LOCATION,     PawsModel::createBodyLayer);
+        event.registerLayerDefinition(ToeBeansModel.LAYER_LOCATION, ToeBeansModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register(
+                (stack, tintIndex) -> {
+                    if (stack.getItem() instanceof DyeableEquipmentItem d) {
+                        return tintIndex == 0 ? d.getMainColor(stack) : d.getAccentColor(stack);
+                    }
+                    return -1;
+                },
+                ModItems.CAT_EARS.get(), ModItems.PAWS.get(),
+                ModItems.TAIL.get(),     ModItems.TOE_BEANS.get());
     }
 
     @SubscribeEvent
