@@ -10,9 +10,14 @@ import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.loader.api.FabricLoader;
 import net.melatowoin.client.model.CatEarModel;
+import net.melatowoin.client.model.PawsModel;
 import net.melatowoin.client.model.TailModel;
+import net.melatowoin.client.model.ToeBeansModel;
+import net.melatowoin.client.AccessoriesSlotHelper;
 import net.melatowoin.client.screen.EepyScreen;
 import net.melatowoin.fabric.client.renderer.FabricCatEarsRenderer;
+import net.melatowoin.item.DyeableEquipmentItem;
+import io.wispforest.accessories.api.AccessoriesCapability;
 import net.melatowoin.network.EepyScreenPacket;
 import net.melatowoin.registry.ModEntityTypes;
 import net.melatowoin.registry.ModFluids;
@@ -25,16 +30,46 @@ public class MelatowoinFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // Register model layers
-        EntityModelLayerRegistry.registerModelLayer(CatEarModel.LAYER_LOCATION, CatEarModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(TailModel.LAYER_LOCATION, TailModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(CatEarModel.LAYER_LOCATION,   CatEarModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(TailModel.LAYER_LOCATION,     TailModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(PawsModel.LAYER_LOCATION,     PawsModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(ToeBeansModel.LAYER_LOCATION, ToeBeansModel::createBodyLayer);
+
+        // Hook for first-person paw rendering when paws are in the Accessories hand slot
+        AccessoriesSlotHelper.findPawsInAccessories = player -> {
+            var cap = AccessoriesCapability.get(player);
+            if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var container = cap.getContainers().get("hand");
+            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var stacks = container.getAccessories();
+            for (int i = 0; i < stacks.getContainerSize(); i++) {
+                var s = stacks.getItem(i);
+                if (s.getItem() instanceof DyeableEquipmentItem d
+                        && d.getEquipType() == DyeableEquipmentItem.EquipType.PAWS) return s;
+            }
+            return net.minecraft.world.item.ItemStack.EMPTY;
+        };
 
         // Register projectile renderers
         EntityRendererRegistry.register(ModEntityTypes.CYAN_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntityTypes.ORANGE_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));
 
-        // Register custom armor renderers for cat ears (HEAD) and tail (LEGS)
-        ArmorRenderer.register(new FabricCatEarsRenderer(true),  ModItems.CAT_EARS.get());
-        ArmorRenderer.register(new FabricCatEarsRenderer(false), ModItems.TAIL.get());
+        // Register one armor renderer for all four cat equipment items
+        FabricCatEarsRenderer equipRenderer = new FabricCatEarsRenderer();
+        ArmorRenderer.register(equipRenderer,
+                ModItems.CAT_EARS.get(), ModItems.PAWS.get(),
+                ModItems.TAIL.get(),     ModItems.TOE_BEANS.get());
+
+        // Item tint: layer 0 → main color, layer 1 → accent color
+        net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> {
+                    if (stack.getItem() instanceof net.melatowoin.item.DyeableEquipmentItem d) {
+                        return tintIndex == 0 ? d.getMainColor(stack) : d.getAccentColor(stack);
+                    }
+                    return -1;
+                },
+                ModItems.CAT_EARS.get(), ModItems.PAWS.get(),
+                ModItems.TAIL.get(),     ModItems.TOE_BEANS.get());
 
         // Register network receiver for Eepy screen packet (S2C)
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, EepyScreenPacket.ID,

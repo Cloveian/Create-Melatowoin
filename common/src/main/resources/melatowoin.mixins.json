@@ -3,6 +3,9 @@
   "package": "net.melatowoin.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
+  "client": [
+    "client.MixinItemInHandRenderer"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

@@ -24,6 +24,19 @@ cd "$SAVED" >/dev/null
 
 CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
+# Auto-detect Java 17 if JAVA_HOME is not already pointing at a Java 17+ JDK.
+# This lets the Gradle daemon run on Java 17 even when the system default is newer.
+_current_major() { "$1/bin/java" -version 2>&1 | sed -n 's/.*version "\([0-9]*\).*/\1/p' | head -1; }
+if [ -z "$JAVA_HOME" ] || [ "$(_current_major "$JAVA_HOME")" != "17" ]; then
+    for _dir in /usr/lib/jvm/*/; do
+        _release="$_dir/release"
+        if [ -f "$_release" ] && grep -q 'JAVA_VERSION="17' "$_release" && [ -x "$_dir/bin/java" ]; then
+            JAVA_HOME="$_dir"
+            break
+        fi
+    done
+fi
+
 # Determine the Java command to use
 if [ -n "$JAVA_HOME" ] ; then
     JAVACMD="$JAVA_HOME/bin/java"

@@ -2,6 +2,7 @@ package net.melatowoin.item;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeColor;
@@ -14,19 +15,22 @@ import java.util.List;
 
 /**
  * Base class for cat-themed equipment that can be dyed in the crafting table.
- * Left/right of item in crafting grid sets the main (fur) color.
- * Above/below of item sets the accent (paw pad) color.
+ * Left/right dyes in the crafting grid set the main (fur) color.
+ * Above/below dyes set the accent (paw pad / inner ear) color.
+ * Multiple dyes on the same side are mixed using the Java Edition leather-armor formula.
  */
 public class DyeableEquipmentItem extends ArmorItem {
 
     public enum EquipType { CAT_EARS, TAIL, PAWS, TOE_BEANS }
 
-    public static final int DEFAULT_MAIN_COLOR   = 0xFFFFFF; // white — shown as-is without tint
-    public static final int DEFAULT_ACCENT_COLOR = 0xFFB6C1; // light pink paw pads
+    public static final int DEFAULT_MAIN_COLOR   = 0xFFFFFF;
+    public static final int DEFAULT_ACCENT_COLOR = 0xFFC3FA;
 
-    private static final String NBT_ROOT   = "MelatowoinEquip";
-    private static final String TAG_MAIN   = "MainColor";
-    private static final String TAG_ACCENT = "AccentColor";
+    private static final String NBT_ROOT        = "MelatowoinEquip";
+    private static final String TAG_MAIN        = "MainColor";
+    private static final String TAG_ACCENT      = "AccentColor";
+    private static final String TAG_MAIN_DYED   = "MainDyed";
+    private static final String TAG_ACCENT_DYED = "AccentDyed";
 
     private final EquipType equipType;
 
@@ -35,9 +39,7 @@ public class DyeableEquipmentItem extends ArmorItem {
         this.equipType = equipType;
     }
 
-    public EquipType getEquipType() {
-        return equipType;
-    }
+    public EquipType getEquipType() { return equipType; }
 
     // ---- Color NBT helpers ----
 
@@ -59,30 +61,53 @@ public class DyeableEquipmentItem extends ArmorItem {
         stack.getOrCreateTagElement(NBT_ROOT).putInt(TAG_ACCENT, color);
     }
 
-    // ---- Entity texture for custom render layers ----
-
-    /** Texture used by CatEarsLayer / FabricCatEarsRenderer for cat ears geometry. */
-    public String getEarTexture() {
-        return "melatowoin:textures/entities/white_ears.png";
+    /** Whether the main color has been explicitly dyed (used to include it in re-dye mixing). */
+    public boolean isMainDyed(ItemStack stack) {
+        CompoundTag tag = stack.getTagElement(NBT_ROOT);
+        return tag != null && tag.getBoolean(TAG_MAIN_DYED);
     }
 
-    /** Texture used by CatEarsLayer / FabricCatEarsRenderer for tail geometry. */
-    public String getTailTexture() {
-        return "melatowoin:textures/entities/white_tail.png";
+    /** Whether the accent color has been explicitly dyed. */
+    public boolean isAccentDyed(ItemStack stack) {
+        CompoundTag tag = stack.getTagElement(NBT_ROOT);
+        return tag != null && tag.getBoolean(TAG_ACCENT_DYED);
+    }
+
+    public void setMainDyed(ItemStack stack, boolean dyed) {
+        stack.getOrCreateTagElement(NBT_ROOT).putBoolean(TAG_MAIN_DYED, dyed);
+    }
+
+    public void setAccentDyed(ItemStack stack, boolean dyed) {
+        stack.getOrCreateTagElement(NBT_ROOT).putBoolean(TAG_ACCENT_DYED, dyed);
+    }
+
+    // ---- Entity texture ResourceLocations for two-pass rendering ----
+
+    /** Grayscale texture covering main-color areas; accent regions are transparent. */
+    public ResourceLocation getEntityLayer1() {
+        String name = switch (equipType) {
+            case CAT_EARS           -> "ears";
+            case TAIL               -> "tail";
+            case PAWS, TOE_BEANS   -> "paws";
+        };
+        return new ResourceLocation("melatowoin", "textures/entities/equipment/" + name + "_layer1.png");
+    }
+
+    /** Grayscale texture covering accent-color areas; main regions are transparent. */
+    public ResourceLocation getEntityLayer2() {
+        String name = switch (equipType) {
+            case CAT_EARS           -> "ears";
+            case TAIL               -> "tail";
+            case PAWS, TOE_BEANS   -> "paws";
+        };
+        return new ResourceLocation("melatowoin", "textures/entities/equipment/" + name + "_layer2.png");
     }
 
     // ---- Forge armor texture override ----
-    // Returning transparent.png hides the vanilla HumanoidArmorLayer so our
-    // custom render layers (CatEarsLayer on Forge, FabricCatEarsRenderer on Fabric)
-    // are the sole renderers for cat_ears and tail.
-    // For toe_beans we return the actual boot texture so vanilla handles it.
+    // All pieces return transparent.png so vanilla HumanoidArmorLayer renders nothing.
+    // Our custom render layers (CatEarsLayer / FabricCatEarsRenderer) handle everything.
     public String getArmorTexture(ItemStack stack, net.minecraft.world.entity.Entity entity,
                                    EquipmentSlot slot, String type) {
-        if (equipType == EquipType.TOE_BEANS) {
-            return type == null
-                    ? "melatowoin:textures/models/armor/toe_beans_layer_1.png"
-                    : "melatowoin:textures/models/armor/toe_beans_layer_2.png";
-        }
         return "melatowoin:textures/models/armor/transparent.png";
     }
 
@@ -97,7 +122,8 @@ public class DyeableEquipmentItem extends ArmorItem {
         }
     }
 
-    // ---- Helper: check whether a full catgirl set is equipped ----
+    // ---- Full-set helper ----
+
     public static boolean isFullSetEquipped(net.minecraft.world.entity.LivingEntity entity) {
         return isType(entity.getItemBySlot(EquipmentSlot.HEAD),  EquipType.CAT_EARS)
             && isType(entity.getItemBySlot(EquipmentSlot.CHEST), EquipType.PAWS)
@@ -109,7 +135,7 @@ public class DyeableEquipmentItem extends ArmorItem {
         return stack.getItem() instanceof DyeableEquipmentItem d && d.equipType == type;
     }
 
-    /** Returns the DyeColor's packed RGB int. */
+    /** Returns the DyeColor's packed RGB int (firework color). */
     public static int colorOf(DyeColor dye) {
         return dye.getFireworkColor();
     }
