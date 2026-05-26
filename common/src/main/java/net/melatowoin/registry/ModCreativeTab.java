@@ -47,12 +47,13 @@ public class ModCreativeTab {
 
             // Food
             output.accept(ModItems.FURRYCORE.get());
-            output.accept(ModItems.CYANPILL.get());
-            output.accept(ModItems.ORANGPIL.get());
+            output.accept(ModItems.CYAN_PILL.get());
+            output.accept(ModItems.ORANGE_PILL.get());
 
             // Throwables
             output.accept(ModItems.CYANABLE.get());
             output.accept(ModItems.ORANGEABLE.get());
+            output.accept(ModItems.ORANGE_ARROW.get());
 
             // Buckets
             if (ModItems.ACETONE_BUCKET   != null) output.accept(ModItems.ACETONE_BUCKET.get());

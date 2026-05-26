@@ -4,6 +4,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.melatowoin.MelatowoinMod;
 import net.melatowoin.entity.CyanProjectileEntity;
+import net.melatowoin.entity.OrangeArrowEntity;
 import net.melatowoin.entity.OrangeProjectileEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -28,6 +29,14 @@ public class ModEntityTypes {
                             .clientTrackingRange(4)
                             .updateInterval(10)
                             .build("orange_projectile"));
+
+    public static final RegistrySupplier<EntityType<OrangeArrowEntity>> ORANGE_ARROW =
+            ENTITY_TYPES.register("orange_arrow", () ->
+                    EntityType.Builder.<OrangeArrowEntity>of(OrangeArrowEntity::new, MobCategory.MISC)
+                            .sized(0.5f, 0.5f)
+                            .clientTrackingRange(4)
+                            .updateInterval(20)
+                            .build("orange_arrow"));
 
     public static void register() {
         ENTITY_TYPES.register();

@@ -2,28 +2,28 @@
   "type": "create:sequenced_assembly",
   "ingredient": { "item": "melatowoin:headband" },
   "loops": 3,
-  "transitionalItem": { "item": "melatowoin:headband" },
+  "transitionalItem": { "item": "melatowoin:incomplete_cat_ears" },
   "sequence": [
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:headband" },
+        { "item": "melatowoin:incomplete_cat_ears" },
         { "item": "melatowoin:fur" }
       ],
-      "results": [ { "item": "melatowoin:headband" } ]
+      "results": [ { "item": "melatowoin:incomplete_cat_ears" } ]
     },
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:headband" },
+        { "item": "melatowoin:incomplete_cat_ears" },
         { "item": "melatowoin:plastic" }
       ],
-      "results": [ { "item": "melatowoin:headband" } ]
+      "results": [ { "item": "melatowoin:incomplete_cat_ears" } ]
     },
     {
       "type": "create:pressing",
-      "ingredients": [ { "item": "melatowoin:headband" } ],
-      "results": [ { "item": "melatowoin:headband" } ]
+      "ingredients": [ { "item": "melatowoin:incomplete_cat_ears" } ],
+      "results": [ { "item": "melatowoin:incomplete_cat_ears" } ]
     }
   ],
   "results": [ { "item": "melatowoin:cat_ears", "chance": 1.0 } ]

@@ -6,6 +6,8 @@ import net.melatowoin.MelatowoinMod;
 import net.melatowoin.item.CyanPillItem;
 import net.melatowoin.item.CyanSauceItem;
 import net.melatowoin.item.DyeableEquipmentItem;
+import net.melatowoin.item.OrangeArrowItem;
+import net.melatowoin.item.OrangePillItem;
 import net.melatowoin.item.OrangeSauceItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -122,6 +124,22 @@ public class ModItems {
                 }
             });
 
+    /** Incomplete Cat Ears — processed from Headband via Create. */
+    public static final RegistrySupplier<Item> INCOMPLETE_CAT_EARS =
+            ITEMS.register("incomplete_cat_ears", () -> new Item(new Item.Properties().stacksTo(16)));
+
+    /** Incomplete Tail — processed from High Quality Fabric via Create. */
+    public static final RegistrySupplier<Item> INCOMPLETE_TAIL =
+            ITEMS.register("incomplete_tail", () -> new Item(new Item.Properties().stacksTo(16)));
+
+    /** Incomplete Paws — processed from Mittens via Create. */
+    public static final RegistrySupplier<Item> INCOMPLETE_PAWS =
+            ITEMS.register("incomplete_paws", () -> new Item(new Item.Properties().stacksTo(16)));
+
+    /** Incomplete Toe Beans — processed from Socks via Create. */
+    public static final RegistrySupplier<Item> INCOMPLETE_TOE_BEANS =
+            ITEMS.register("incomplete_toe_beans", () -> new Item(new Item.Properties().stacksTo(16)));
+
     // ---- Dyeable wearable items ----
 
     /** Cat Ears — helmet slot + Accessories hat slot. Dyeable (main = fur, accent = inner ear). */
@@ -164,15 +182,15 @@ public class ModItems {
                 }
             });
 
-    public static final RegistrySupplier<Item> CYANPILL =
-            ITEMS.register("cyanpill", () -> new CyanPillItem(
+    public static final RegistrySupplier<Item> CYAN_PILL =
+            ITEMS.register("cyan_pill", () -> new CyanPillItem(
                     new Item.Properties()
                             .stacksTo(64)
                             .food(new FoodProperties.Builder()
                                     .nutrition(0).saturationMod(0).alwaysEat().build())));
 
-    public static final RegistrySupplier<Item> ORANGPIL =
-            ITEMS.register("orangpil", () -> new Item(
+    public static final RegistrySupplier<Item> ORANGE_PILL =
+            ITEMS.register("orange_pill", () -> new OrangePillItem(
                     new Item.Properties()
                             .stacksTo(64)
                             .food(new FoodProperties.Builder()
@@ -185,6 +203,9 @@ public class ModItems {
 
     public static final RegistrySupplier<Item> ORANGEABLE =
             ITEMS.register("orangeable", () -> new OrangeSauceItem(new Item.Properties().stacksTo(64)));
+
+    public static final RegistrySupplier<Item> ORANGE_ARROW =
+            ITEMS.register("orange_arrow", () -> new OrangeArrowItem(new Item.Properties().stacksTo(64)));
 
     // ---- Bucket items (registered by platform modules after fluid registration) ----
 

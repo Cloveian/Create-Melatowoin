@@ -31,6 +31,11 @@ dependencies {
 
     modImplementation "com.simibubi.create:create-1.20.1:${rootProject.create_forge_version}"
 
+    modCompileOnly "maven.modrinth:accessories:${rootProject.accessories_forge_modrinth_id}"
+
+    // Provides net.fabricmc.api.EnvType stubs so @Environment annotations compile without warnings
+    compileOnly "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive false }
 }

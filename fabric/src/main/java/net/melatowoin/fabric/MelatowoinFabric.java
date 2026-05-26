@@ -22,7 +22,7 @@ public class MelatowoinFabric implements ModInitializer {
         // Default: equip in armor slots; override with Accessories priority logic if present
         OrangeProjectileEntity.onHitExtra = OrangeEquipHelper::defaultEquip;
         if (FabricLoader.getInstance().isModLoaded("accessories")) {
-            OrangeProjectileEntity.onHitExtra = AccessoriesSauceHelper::equipEarsAndTail;
+            OrangeProjectileEntity.onHitExtra = (entity, stack) -> AccessoriesSauceHelper.equipEarsAndTail(entity, stack);
         }
     }
 }

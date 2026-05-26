@@ -3,12 +3,15 @@
   "package": "net.melatowoin.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MixinAccessoriesHolderImpl",
+    "MixinEnchantment",
     "MixinLivingEntityEffects",
     "MixinStepSound",
     "MixinContainerGameEvent"
   ],
   "client": [
-    "MixinChestSound"
+    "MixinChestSound",
+    "MixinAccessoriesRenderLayer"
   ],
   "injectors": {
     "defaultRequire": 1

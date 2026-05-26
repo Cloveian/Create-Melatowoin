@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "melatowoin:item/cat_ears_layer1",
+    "layer1": "melatowoin:item/cat_ears_layer2",
+    "layer2": "melatowoin:item/cat_ears_layer3"
+  }
+}

@@ -32,7 +32,7 @@ public class MelatowoinForge {
         // Default: equip in armor slots; override with Accessories priority logic if present
         OrangeProjectileEntity.onHitExtra = OrangeEquipHelper::defaultEquip;
         if (ModList.get().isLoaded("accessories")) {
-            OrangeProjectileEntity.onHitExtra = AccessoriesForgeHelper::equipEarsAndTail;
+            OrangeProjectileEntity.onHitExtra = (entity, stack) -> AccessoriesForgeHelper.equipEarsAndTail(entity, stack);
         }
 
         // @Mod.EventBusSubscriber classes (ForgeEventHandlers, MelatowoinForgeClient)

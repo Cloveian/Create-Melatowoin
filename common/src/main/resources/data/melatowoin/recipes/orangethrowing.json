@@ -1,20 +1,10 @@
 {
-  "type": "create:compacting",
+  "type": "create:mixing",
   "ingredients": [
-    {
-      "item": "melatowoin:orangpil"
-    },
-    {
-      "item": "minecraft:glass_bottle"
-    },
-    {
-      "amount": 4050,
-      "fluid": "minecraft:water"
-    }
+    {"item": "melatowoin:orange_pill"},
+    {"fluid": "minecraft:water", "amount": 20250}
   ],
   "results": [
-    {
-      "item": "melatowoin:orangeable"
-    }
+    {"item": "melatowoin:orangeable"}
   ]
 }

@@ -2,28 +2,28 @@
   "type": "create:sequenced_assembly",
   "ingredient": { "item": "melatowoin:mittens" },
   "loops": 3,
-  "transitionalItem": { "item": "melatowoin:mittens" },
+  "transitionalItem": { "item": "melatowoin:incomplete_paws" },
   "sequence": [
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:mittens" },
+        { "item": "melatowoin:incomplete_paws" },
         { "item": "melatowoin:fur" }
       ],
-      "results": [ { "item": "melatowoin:mittens" } ]
+      "results": [ { "item": "melatowoin:incomplete_paws" } ]
     },
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:mittens" },
+        { "item": "melatowoin:incomplete_paws" },
         { "item": "melatowoin:plastic" }
       ],
-      "results": [ { "item": "melatowoin:mittens" } ]
+      "results": [ { "item": "melatowoin:incomplete_paws" } ]
     },
     {
       "type": "create:pressing",
-      "ingredients": [ { "item": "melatowoin:mittens" } ],
-      "results": [ { "item": "melatowoin:mittens" } ]
+      "ingredients": [ { "item": "melatowoin:incomplete_paws" } ],
+      "results": [ { "item": "melatowoin:incomplete_paws" } ]
     }
   ],
   "results": [ { "item": "melatowoin:paws", "chance": 1.0 } ]

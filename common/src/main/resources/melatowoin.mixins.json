@@ -1,10 +1,15 @@
 {
   "required": true,
+  "minVersion": "0.8.5",
   "package": "net.melatowoin.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "MixinCatInteract",
+    "MixinPowderSnow"
+  ],
   "client": [
-    "client.MixinItemInHandRenderer"
+    "client.MixinItemInHandRenderer",
+    "client.MixinHumanoidArmorLayer"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -119,14 +119,14 @@ public class FabricCatEarsRenderer implements ArmorRenderer {
 
                 matrices.pushPose();
                 contextModel.rightLeg.translateAndRotate(matrices);
-                matrices.scale(1.2f, 1.2f, 1.2f);
+                matrices.scale(1.26f, 1.26f, 1.26f);
                 toeBeansModel.renderToeBeansThick(matrices, vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 toeBeansModel.renderToeBeansThick(matrices, vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
                 matrices.popPose();
 
                 matrices.pushPose();
                 contextModel.leftLeg.translateAndRotate(matrices);
-                matrices.scale(-1.2f, 1.2f, 1.2f);
+                matrices.scale(-1.26f, 1.26f, 1.26f);
                 toeBeansModel.renderToeBeansThick(matrices, vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 toeBeansModel.renderToeBeansThick(matrices, vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
                 matrices.popPose();
