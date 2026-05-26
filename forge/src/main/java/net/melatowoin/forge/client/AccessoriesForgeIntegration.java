@@ -34,6 +34,8 @@ public class AccessoriesForgeIntegration {
     private static class EarAccessoryRenderer implements AccessoryRenderer {
         private CatEarModel earModel;
 
+        @Override public boolean shouldRender(boolean isRendering) { return true; }
+
         private void initModel() {
             if (earModel == null) {
                 EntityModelSet modelSet = Minecraft.getInstance().getEntityModels();
@@ -55,7 +57,11 @@ public class AccessoriesForgeIntegration {
             ((HumanoidModel<?>) model).head.translateAndRotate(matrices);
             final float earScale = 8f / 12f;
             final float headTop  = 8f / 16f;
-            matrices.translate(0.0, -headTop, 0.0);
+            // Shift ears 1 pixel higher when a helmet occupies the head armor slot
+            // so the ears sit on top of the helmet instead of clipping through it.
+            float helmetLift = reference.entity().getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD).isEmpty()
+                    ? 0f : 1f / 16f;
+            matrices.translate(0.0, -headTop - helmetLift, 0.0);
             matrices.scale(earScale, earScale, earScale);
             matrices.translate(0.0, headTop, 0.0);
             EquipmentColorRenderer.renderTwoPass(matrices, buffers, earModel,
@@ -67,6 +73,8 @@ public class AccessoriesForgeIntegration {
 
     private static class TailAccessoryRenderer implements AccessoryRenderer {
         private TailModel tailModel;
+
+        @Override public boolean shouldRender(boolean isRendering) { return true; }
 
         private void initModel() {
             if (tailModel == null) {
@@ -97,6 +105,8 @@ public class AccessoriesForgeIntegration {
 
     private static class PawsAccessoryRenderer implements AccessoryRenderer {
         private PawsModel pawsModel;
+
+        @Override public boolean shouldRender(boolean isRendering) { return true; }
 
         private void initModel() {
             if (pawsModel == null) {
@@ -152,6 +162,8 @@ public class AccessoriesForgeIntegration {
     private static class ToeBeansAccessoryRenderer implements AccessoryRenderer {
         private ToeBeansModel toeBeansModel;
 
+        @Override public boolean shouldRender(boolean isRendering) { return true; }
+
         private void initModel() {
             if (toeBeansModel == null) {
                 EntityModelSet modelSet = Minecraft.getInstance().getEntityModels();
@@ -176,14 +188,14 @@ public class AccessoriesForgeIntegration {
 
             matrices.pushPose();
             ((HumanoidModel<?>) model).rightLeg.translateAndRotate(matrices);
-            matrices.scale(1.2f, 1.2f, 1.2f);
+            matrices.scale(1.26f, 1.26f, 1.26f);
             toeBeansModel.renderToeBeansThick(matrices, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
             toeBeansModel.renderToeBeansThick(matrices, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             matrices.popPose();
 
             matrices.pushPose();
             ((HumanoidModel<?>) model).leftLeg.translateAndRotate(matrices);
-            matrices.scale(-1.2f, 1.2f, 1.2f);
+            matrices.scale(-1.26f, 1.26f, 1.26f);
             toeBeansModel.renderToeBeansThick(matrices, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
             toeBeansModel.renderToeBeansThick(matrices, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             matrices.popPose();

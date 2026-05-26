@@ -2,28 +2,28 @@
   "type": "create:sequenced_assembly",
   "ingredient": { "item": "melatowoin:socks" },
   "loops": 3,
-  "transitionalItem": { "item": "melatowoin:socks" },
+  "transitionalItem": { "item": "melatowoin:incomplete_toe_beans" },
   "sequence": [
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:socks" },
+        { "item": "melatowoin:incomplete_toe_beans" },
         { "item": "melatowoin:fur" }
       ],
-      "results": [ { "item": "melatowoin:socks" } ]
+      "results": [ { "item": "melatowoin:incomplete_toe_beans" } ]
     },
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:socks" },
+        { "item": "melatowoin:incomplete_toe_beans" },
         { "item": "melatowoin:plastic" }
       ],
-      "results": [ { "item": "melatowoin:socks" } ]
+      "results": [ { "item": "melatowoin:incomplete_toe_beans" } ]
     },
     {
       "type": "create:pressing",
-      "ingredients": [ { "item": "melatowoin:socks" } ],
-      "results": [ { "item": "melatowoin:socks" } ]
+      "ingredients": [ { "item": "melatowoin:incomplete_toe_beans" } ],
+      "results": [ { "item": "melatowoin:incomplete_toe_beans" } ]
     }
   ],
   "results": [ { "item": "melatowoin:toe_beans", "chance": 1.0 } ]

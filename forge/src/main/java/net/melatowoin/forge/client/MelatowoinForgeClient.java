@@ -48,6 +48,20 @@ public class MelatowoinForgeClient {
                 }
                 return net.minecraft.world.item.ItemStack.EMPTY;
             };
+
+            AccessoriesSlotHelper.findToeBeansInAccessories = player -> {
+                var cap = AccessoriesCapability.get(player);
+                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var container = cap.getContainers().get("shoes");
+                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var stacks = container.getAccessories();
+                for (int i = 0; i < stacks.getContainerSize(); i++) {
+                    var s = stacks.getItem(i);
+                    if (s.getItem() instanceof DyeableEquipmentItem d
+                            && d.getEquipType() == DyeableEquipmentItem.EquipType.TOE_BEANS) return s;
+                }
+                return net.minecraft.world.item.ItemStack.EMPTY;
+            };
         }
 
         // Register Eepy screen network packet receiver (S2C)
@@ -68,6 +82,13 @@ public class MelatowoinForgeClient {
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.CYAN_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.ORANGE_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.ORANGE_ARROW.get(), ctx ->
+                new net.minecraft.client.renderer.entity.ArrowRenderer<net.melatowoin.entity.OrangeArrowEntity>(ctx) {
+                    @Override
+                    public net.minecraft.resources.ResourceLocation getTextureLocation(net.melatowoin.entity.OrangeArrowEntity e) {
+                        return new net.minecraft.resources.ResourceLocation("textures/entity/projectiles/arrow.png");
+                    }
+                });
     }
 
     @SubscribeEvent

@@ -11,4 +11,5 @@ import java.util.function.Function;
  */
 public class AccessoriesSlotHelper {
     public static Function<Player, ItemStack> findPawsInAccessories = p -> ItemStack.EMPTY;
+    public static Function<Player, ItemStack> findToeBeansInAccessories = p -> ItemStack.EMPTY;
 }

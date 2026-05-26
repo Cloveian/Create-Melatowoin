@@ -1,0 +1,9 @@
+{
+  "type": "melatowoin:orange_arrow",
+  "category": "equipment",
+  "ingredients": [
+    {"item": "melatowoin:orangeable"},
+    {"item": "minecraft:arrow"}
+  ],
+  "result": {"item": "melatowoin:orange_arrow"}
+}

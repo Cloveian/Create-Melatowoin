@@ -2,28 +2,28 @@
   "type": "create:sequenced_assembly",
   "ingredient": { "item": "melatowoin:fabric" },
   "loops": 3,
-  "transitionalItem": { "item": "melatowoin:fabric" },
+  "transitionalItem": { "item": "melatowoin:incomplete_tail" },
   "sequence": [
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:fabric" },
+        { "item": "melatowoin:incomplete_tail" },
         { "item": "melatowoin:fur" }
       ],
-      "results": [ { "item": "melatowoin:fabric" } ]
+      "results": [ { "item": "melatowoin:incomplete_tail" } ]
     },
     {
       "type": "create:deploying",
       "ingredients": [
-        { "item": "melatowoin:fabric" },
+        { "item": "melatowoin:incomplete_tail" },
         { "item": "melatowoin:plastic" }
       ],
-      "results": [ { "item": "melatowoin:fabric" } ]
+      "results": [ { "item": "melatowoin:incomplete_tail" } ]
     },
     {
       "type": "create:pressing",
-      "ingredients": [ { "item": "melatowoin:fabric" } ],
-      "results": [ { "item": "melatowoin:fabric" } ]
+      "ingredients": [ { "item": "melatowoin:incomplete_tail" } ],
+      "results": [ { "item": "melatowoin:incomplete_tail" } ]
     }
   ],
   "results": [ { "item": "melatowoin:tail", "chance": 1.0 } ]

@@ -111,6 +111,29 @@ public class DyeableEquipmentItem extends ArmorItem {
         return "melatowoin:textures/models/armor/transparent.png";
     }
 
+    // ---- Forge enchantment override ----
+    // Allows slot-specific armor enchants (Respiration, Feather Falling, etc.) in addition to
+    // the generic armor enchants that already work via instanceof ArmorItem.
+    public boolean canApplyAtEnchantingTable(ItemStack stack,
+            net.minecraft.world.item.enchantment.Enchantment enchantment) {
+        net.minecraft.world.item.enchantment.EnchantmentCategory cat = enchantment.category;
+        if (cat == net.minecraft.world.item.enchantment.EnchantmentCategory.ARMOR
+                || cat == net.minecraft.world.item.enchantment.EnchantmentCategory.BREAKABLE
+                || cat == net.minecraft.world.item.enchantment.EnchantmentCategory.VANISHABLE) {
+            return true;
+        }
+        return cat == slotCategory();
+    }
+
+    public net.minecraft.world.item.enchantment.EnchantmentCategory slotCategory() {
+        return switch (this.getType()) {
+            case HELMET     -> net.minecraft.world.item.enchantment.EnchantmentCategory.ARMOR_HEAD;
+            case CHESTPLATE -> net.minecraft.world.item.enchantment.EnchantmentCategory.ARMOR_CHEST;
+            case LEGGINGS   -> net.minecraft.world.item.enchantment.EnchantmentCategory.ARMOR_LEGS;
+            case BOOTS      -> net.minecraft.world.item.enchantment.EnchantmentCategory.ARMOR_FEET;
+        };
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip,
                                 TooltipFlag flag) {

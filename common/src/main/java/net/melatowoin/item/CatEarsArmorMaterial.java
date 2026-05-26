@@ -8,7 +8,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public enum CatEarsArmorMaterial implements ArmorMaterial {
-    CAT_EARS("cat_ears", 40, new int[]{0, 3, 0, 2}, 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F);
+    CAT_EARS("cat_ears", 40, new int[]{1, 3, 5, 2}, 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F);
 
     private static final int[] SLOT_HEALTH_INCREMENTS = new int[]{13, 15, 16, 11};
 

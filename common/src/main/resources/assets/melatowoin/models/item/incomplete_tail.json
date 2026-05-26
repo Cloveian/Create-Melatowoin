@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "melatowoin:item/tail_layer1",
+    "layer1": "melatowoin:item/tail_layer2",
+    "layer2": "melatowoin:item/tail_layer3"
+  }
+}

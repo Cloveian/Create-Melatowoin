@@ -1,16 +1,14 @@
 {
-  "type": "create:mixing",
+  "type": "create:compacting",
   "ingredients": [
-    {
-      "item": "melatowoin:cyanpill"
-    },
-    {
-      "item": "melatowoin:purefurryness"
-    }
+    {"item": "melatowoin:cyan_pill"},
+    {"item": "melatowoin:purefurryness"},
+    {"item": "melatowoin:cat_ears"},
+    {"item": "melatowoin:tail"},
+    {"item": "melatowoin:paws"},
+    {"item": "melatowoin:toe_beans"}
   ],
   "results": [
-    {
-      "item": "melatowoin:orangpil"
-    }
+    {"item": "melatowoin:orange_pill"}
   ]
 }

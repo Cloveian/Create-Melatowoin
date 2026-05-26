@@ -1,5 +1,6 @@
 {
   "required": true,
+  "minVersion": "0.8.5",
   "package": "net.melatowoin.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
@@ -7,7 +8,8 @@
     "MixinContainerGameEvent"
   ],
   "client": [
-    "MixinChestSound"
+    "MixinChestSound",
+    "MixinAccessoriesRenderLayer"
   ],
   "injectors": {
     "defaultRequire": 1

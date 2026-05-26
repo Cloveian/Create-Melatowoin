@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public class MixinChestSound {
 
-    @Inject(method = "handleSound", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "m_8068_", remap = false, at = @At("HEAD"), cancellable = true)
     private void melatowoin$suppressChestSound(ClientboundSoundPacket packet, CallbackInfo ci) {
         var sound = packet.getSound().value();
         if (sound != SoundEvents.CHEST_OPEN && sound != SoundEvents.CHEST_CLOSE) return;
