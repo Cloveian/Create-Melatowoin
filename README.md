@@ -5,7 +5,7 @@ A chaos-themed Create addon for **Minecraft 1.20.1**, on **Fabric and Forge**.
 
 Adds dyeable cat ears, tails, paws, and toe beans — plus a full Create chloroform production line, throwable sauces that turn your friends into furries, and pills that probably aren't legal.
 
-![hero shot](https://raw.githubusercontent.com/Cloveian/Create-Melatowoin/main/images/sneaky-sneaky.mp4)
+<video src="https://raw.githubusercontent.com/Cloveian/Create-Melatowoin/main/images/sneaky-sneaky.mp4" controls width="480" muted loop></video>
 
 The grid below shows the **16-color random palette** that gets rolled when an *undyed* Orange Sauce hits a target — one of the 16 vanilla dye colors with an auto-contrasting black/white accent:
 
@@ -56,7 +56,8 @@ All four pieces are **two-color dyeable** in a crafting table:
 | Throwable Orange Sauce | Throw at a friend → equips them with a Curse-of-Binding-locked furry outfit + *Change* effect |
 | Orange Arrow | Fires from any bow. Same effect as Orange Sauce, with range |
 
-![orange arrow](https://raw.githubusercontent.com/Cloveian/Create-Melatowoin/main/images/orange-arrow.mp4)
+<video src="https://raw.githubusercontent.com/Cloveian/Create-Melatowoin/main/images/orange-arrow.mp4" controls width="480" muted loop></video>
+
 
 The Orange Pill itself can be **dyed** the same way as the wearables — those colors carry through into the equipment it spawns.
 
