@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "amount": 200,
+      "fluid": "melatowoin:bleach"
+    },
+    {
+      "amount": 250,
+      "fluid": "melatowoin:acetone"
+    }
+  ],
+  "results": [
+    {
+      "amount": 50,
+      "fluid": "melatowoin:chloroform"
+    },
+    {
+      "amount": 500,
+      "fluid": "minecraft:water"
+    }
+  ]
+}

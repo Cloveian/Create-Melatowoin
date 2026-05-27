@@ -1,0 +1,21 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "melatowoin:unpurefurryness"
+    },
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "item": "melatowoin:purefurryness"
+    },
+    {
+      "count": 16,
+      "item": "minecraft:egg"
+    }
+  ]
+}
