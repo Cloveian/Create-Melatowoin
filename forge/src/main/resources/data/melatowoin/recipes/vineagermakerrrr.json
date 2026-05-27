@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "amount": 250,
+      "fluid": "minecraft:water"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "results": [
+    {
+      "amount": 200,
+      "fluid": "melatowoin:vinegar"
+    }
+  ]
+}
