@@ -1,9 +1,12 @@
 package net.melatowoin.forge;
 
 import dev.architectury.platform.forge.EventBuses;
+import io.wispforest.accessories.api.AccessoriesCapability;
 import net.melatowoin.MelatowoinMod;
+import net.melatowoin.client.AccessoriesSlotHelper;
 import net.melatowoin.entity.OrangeProjectileEntity;
 import net.melatowoin.forge.fluid.ForgeAcetoneFluid;
+import net.melatowoin.item.DyeableEquipmentItem;
 import net.melatowoin.item.OrangeEquipHelper;
 import net.melatowoin.forge.fluid.ForgeBleachFluid;
 import net.melatowoin.forge.fluid.ForgeChloroformFluid;
@@ -33,6 +36,23 @@ public class MelatowoinForge {
         OrangeProjectileEntity.onHitExtra = OrangeEquipHelper::defaultEquip;
         if (ModList.get().isLoaded("accessories")) {
             OrangeProjectileEntity.onHitExtra = (entity, stack) -> AccessoriesForgeHelper.equipEarsAndTail(entity, stack);
+
+            // Server-relevant hook: lets common mixins (e.g. powder-snow walking) see
+            // Toe Beans in the Accessories shoes slot. Registered here instead of in
+            // the client init so it works on dedicated servers too.
+            AccessoriesSlotHelper.findToeBeansInAccessories = player -> {
+                var cap = AccessoriesCapability.get(player);
+                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var container = cap.getContainers().get("shoes");
+                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+                var stacks = container.getAccessories();
+                for (int i = 0; i < stacks.getContainerSize(); i++) {
+                    var s = stacks.getItem(i);
+                    if (s.getItem() instanceof DyeableEquipmentItem d
+                            && d.getEquipType() == DyeableEquipmentItem.EquipType.TOE_BEANS) return s;
+                }
+                return net.minecraft.world.item.ItemStack.EMPTY;
+            };
         }
 
         // @Mod.EventBusSubscriber classes (ForgeEventHandlers, MelatowoinForgeClient)

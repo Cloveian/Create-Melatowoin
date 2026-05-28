@@ -50,20 +50,8 @@ public class MelatowoinFabricClient implements ClientModInitializer {
             return net.minecraft.world.item.ItemStack.EMPTY;
         };
 
-        // Hook so the boot-suppression mixin can see Toe Beans in the Accessories shoes slot
-        AccessoriesSlotHelper.findToeBeansInAccessories = player -> {
-            var cap = AccessoriesCapability.get(player);
-            if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var container = cap.getContainers().get("shoes");
-            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var stacks = container.getAccessories();
-            for (int i = 0; i < stacks.getContainerSize(); i++) {
-                var s = stacks.getItem(i);
-                if (s.getItem() instanceof DyeableEquipmentItem d
-                        && d.getEquipType() == DyeableEquipmentItem.EquipType.TOE_BEANS) return s;
-            }
-            return net.minecraft.world.item.ItemStack.EMPTY;
-        };
+        // (findToeBeansInAccessories is registered in MelatowoinFabric.onInitialize so it
+        // works on dedicated servers too — see powder-snow walking)
 
         // Register projectile renderers
         EntityRendererRegistry.register(ModEntityTypes.CYAN_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));
