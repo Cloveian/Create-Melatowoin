@@ -4,11 +4,9 @@
   "package": "net.melatowoin.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MixinStepSound",
     "MixinContainerGameEvent"
   ],
   "client": [
-    "MixinChestSound",
     "MixinAccessoriesRenderLayer"
   ],
   "injectors": {

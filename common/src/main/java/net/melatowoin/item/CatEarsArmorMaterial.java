@@ -33,7 +33,10 @@ public enum CatEarsArmorMaterial implements ArmorMaterial {
 
     @Override
     public int getDurabilityForType(ArmorItem.Type type) {
-        return 40;
+        // 0 = not damageable. Vanilla ItemStack.hurt() early-outs when
+        // getMaxDamage() == 0, so the cat pieces never take wear, never break,
+        // and never show a durability bar.
+        return 0;
     }
 
     @Override

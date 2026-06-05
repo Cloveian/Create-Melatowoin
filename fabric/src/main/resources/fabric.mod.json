@@ -10,7 +10,8 @@
   "environment": "*",
   "entrypoints": {
     "main": ["net.melatowoin.fabric.MelatowoinFabric"],
-    "client": ["net.melatowoin.fabric.client.MelatowoinFabricClient"]
+    "client": ["net.melatowoin.fabric.client.MelatowoinFabricClient"],
+    "modmenu": ["net.melatowoin.fabric.client.MelatowoinModMenu"]
   },
   "mixins": [
     "melatowoin.mixins.json",

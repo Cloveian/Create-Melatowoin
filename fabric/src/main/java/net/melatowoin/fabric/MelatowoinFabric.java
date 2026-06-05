@@ -27,22 +27,29 @@ public class MelatowoinFabric implements ModInitializer {
         if (FabricLoader.getInstance().isModLoaded("accessories")) {
             OrangeProjectileEntity.onHitExtra = (entity, stack) -> AccessoriesSauceHelper.equipEarsAndTail(entity, stack);
 
-            // Server-relevant hook: lets common mixins (e.g. powder-snow walking) see
-            // Toe Beans in the Accessories shoes slot. Registered here instead of in
-            // the client init so it works on dedicated servers too.
-            AccessoriesSlotHelper.findToeBeansInAccessories = player -> {
-                var cap = AccessoriesCapability.get(player);
-                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var container = cap.getContainers().get("shoes");
-                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var stacks = container.getAccessories();
-                for (int i = 0; i < stacks.getContainerSize(); i++) {
-                    var s = stacks.getItem(i);
-                    if (s.getItem() instanceof DyeableEquipmentItem d
-                            && d.getEquipType() == DyeableEquipmentItem.EquipType.TOE_BEANS) return s;
-                }
-                return net.minecraft.world.item.ItemStack.EMPTY;
-            };
+            // Server-relevant hooks: let common mixins (powder-snow walking, freezing,
+            // full-set sound suppression) see each piece in its Accessories slot.
+            // Registered here instead of in the client init so dedicated servers see them too.
+            AccessoriesSlotHelper.findCatEarsInAccessories  = accessoryFinder("hat",   DyeableEquipmentItem.EquipType.CAT_EARS);
+            AccessoriesSlotHelper.findTailInAccessories     = accessoryFinder("belt",  DyeableEquipmentItem.EquipType.TAIL);
+            AccessoriesSlotHelper.findPawsInAccessories     = accessoryFinder("hand",  DyeableEquipmentItem.EquipType.PAWS);
+            AccessoriesSlotHelper.findToeBeansInAccessories = accessoryFinder("shoes", DyeableEquipmentItem.EquipType.TOE_BEANS);
         }
+    }
+
+    private static java.util.function.Function<net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack>
+            accessoryFinder(String slotName, DyeableEquipmentItem.EquipType type) {
+        return player -> {
+            var cap = AccessoriesCapability.get(player);
+            if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var container = cap.getContainers().get(slotName);
+            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var stacks = container.getAccessories();
+            for (int i = 0; i < stacks.getContainerSize(); i++) {
+                var s = stacks.getItem(i);
+                if (s.getItem() instanceof DyeableEquipmentItem d && d.getEquipType() == type) return s;
+            }
+            return net.minecraft.world.item.ItemStack.EMPTY;
+        };
     }
 }

@@ -6,11 +6,14 @@
   "mixins": [
     "MixinCatInteract",
     "MixinPowderSnow",
-    "MixinLivingEntityFreeze"
+    "MixinLivingEntityFreeze",
+    "MixinNuclearUtil"
   ],
   "client": [
     "client.MixinItemInHandRenderer",
-    "client.MixinHumanoidArmorLayer"
+    "client.MixinHumanoidArmorLayer",
+    "client.MixinSoundInstanceMuffle",
+    "client.MixinEntityPlaySound"
   ],
   "injectors": {
     "defaultRequire": 1

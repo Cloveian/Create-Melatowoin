@@ -35,22 +35,8 @@ public class MelatowoinForgeClient {
     public static void onClientSetup(FMLClientSetupEvent event) {
         if (ModList.get().isLoaded("accessories")) {
             AccessoriesForgeIntegration.registerRenderers();
-            AccessoriesSlotHelper.findPawsInAccessories = player -> {
-                var cap = AccessoriesCapability.get(player);
-                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var container = cap.getContainers().get("hand");
-                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var stacks = container.getAccessories();
-                for (int i = 0; i < stacks.getContainerSize(); i++) {
-                    var s = stacks.getItem(i);
-                    if (s.getItem() instanceof DyeableEquipmentItem d
-                            && d.getEquipType() == DyeableEquipmentItem.EquipType.PAWS) return s;
-                }
-                return net.minecraft.world.item.ItemStack.EMPTY;
-            };
-
-            // (findToeBeansInAccessories is registered in MelatowoinForge's constructor
-            // so it works on dedicated servers too — see powder-snow walking)
+            // All Accessories find* hooks are registered in MelatowoinForge's constructor
+            // so they work on dedicated servers too.
         }
 
         // Register Eepy screen network packet receiver (S2C)
