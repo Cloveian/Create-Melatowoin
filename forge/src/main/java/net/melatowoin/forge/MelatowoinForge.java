@@ -37,25 +37,38 @@ public class MelatowoinForge {
         if (ModList.get().isLoaded("accessories")) {
             OrangeProjectileEntity.onHitExtra = (entity, stack) -> AccessoriesForgeHelper.equipEarsAndTail(entity, stack);
 
-            // Server-relevant hook: lets common mixins (e.g. powder-snow walking) see
-            // Toe Beans in the Accessories shoes slot. Registered here instead of in
-            // the client init so it works on dedicated servers too.
-            AccessoriesSlotHelper.findToeBeansInAccessories = player -> {
-                var cap = AccessoriesCapability.get(player);
-                if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var container = cap.getContainers().get("shoes");
-                if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-                var stacks = container.getAccessories();
-                for (int i = 0; i < stacks.getContainerSize(); i++) {
-                    var s = stacks.getItem(i);
-                    if (s.getItem() instanceof DyeableEquipmentItem d
-                            && d.getEquipType() == DyeableEquipmentItem.EquipType.TOE_BEANS) return s;
-                }
-                return net.minecraft.world.item.ItemStack.EMPTY;
-            };
+            // Server-relevant hooks: let common mixins (powder-snow walking, freezing,
+            // full-set sound suppression) see each piece in its Accessories slot.
+            // Registered here instead of in the client init so dedicated servers see them too.
+            AccessoriesSlotHelper.findCatEarsInAccessories  = accessoryFinder("hat",   DyeableEquipmentItem.EquipType.CAT_EARS);
+            AccessoriesSlotHelper.findTailInAccessories     = accessoryFinder("belt",  DyeableEquipmentItem.EquipType.TAIL);
+            AccessoriesSlotHelper.findPawsInAccessories     = accessoryFinder("hand",  DyeableEquipmentItem.EquipType.PAWS);
+            AccessoriesSlotHelper.findToeBeansInAccessories = accessoryFinder("shoes", DyeableEquipmentItem.EquipType.TOE_BEANS);
+        }
+
+        // Client-only: register the Mod Menu config screen factory so this mod
+        // appears with a "Config" button in the Mods list.
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
+            MelatowoinForgeClientConfigScreen.register();
         }
 
         // @Mod.EventBusSubscriber classes (ForgeEventHandlers, MelatowoinForgeClient)
         // are discovered automatically by Forge via annotation scanning.
+    }
+
+    private static java.util.function.Function<net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack>
+            accessoryFinder(String slotName, DyeableEquipmentItem.EquipType type) {
+        return player -> {
+            var cap = AccessoriesCapability.get(player);
+            if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var container = cap.getContainers().get(slotName);
+            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
+            var stacks = container.getAccessories();
+            for (int i = 0; i < stacks.getContainerSize(); i++) {
+                var s = stacks.getItem(i);
+                if (s.getItem() instanceof DyeableEquipmentItem d && d.getEquipType() == type) return s;
+            }
+            return net.minecraft.world.item.ItemStack.EMPTY;
+        };
     }
 }

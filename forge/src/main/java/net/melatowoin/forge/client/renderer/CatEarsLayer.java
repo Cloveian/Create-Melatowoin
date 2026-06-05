@@ -91,6 +91,7 @@ public class CatEarsLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<
                 pawsModel.renderPawsSlim(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 pawsModel.renderPawsSlim(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             } else {
+                pose.translate(-1f / 16f, 0f, 0f); // thick arms — pull paws 1px inward
                 pawsModel.renderPaws(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 pawsModel.renderPaws(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             }
@@ -104,6 +105,7 @@ public class CatEarsLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<
                 pawsModel.renderPawsSlim(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 pawsModel.renderPawsSlim(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             } else {
+                pose.translate(-1f / 16f, 0f, 0f); // thick arms — pull paws 1px inward (mirrored scale handles the sign)
                 pawsModel.renderPaws(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, mc[0], mc[1], mc[2], 1f);
                 pawsModel.renderPaws(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, ac[0], ac[1], ac[2], 1f);
             }

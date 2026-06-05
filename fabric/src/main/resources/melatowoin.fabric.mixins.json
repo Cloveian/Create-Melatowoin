@@ -6,11 +6,9 @@
     "MixinAccessoriesHolderImpl",
     "MixinEnchantment",
     "MixinLivingEntityEffects",
-    "MixinStepSound",
     "MixinContainerGameEvent"
   ],
   "client": [
-    "MixinChestSound",
     "MixinAccessoriesRenderLayer"
   ],
   "injectors": {

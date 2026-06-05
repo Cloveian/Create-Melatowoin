@@ -148,6 +148,7 @@ public class MixinItemInHandRenderer {
                 melatowoin$pawsModel.renderPawsSlim(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, main[0],   main[1],   main[2],   1f);
                 melatowoin$pawsModel.renderPawsSlim(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, accent[0], accent[1], accent[2], 1f);
             } else {
+                poseStack.translate(-1f / 16f, 0f, 0f); // thick arms — pull paws 1px inward (matches 3rd-person)
                 melatowoin$pawsModel.renderPaws(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, main[0],   main[1],   main[2],   1f);
                 melatowoin$pawsModel.renderPaws(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, accent[0], accent[1], accent[2], 1f);
             }
@@ -157,6 +158,7 @@ public class MixinItemInHandRenderer {
                 melatowoin$pawsModel.renderPawsSlim(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, main[0],   main[1],   main[2],   1f);
                 melatowoin$pawsModel.renderPawsSlim(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, accent[0], accent[1], accent[2], 1f);
             } else {
+                poseStack.translate(-1f / 16f, 0f, 0f); // thick arms — pull paws 1px inward (mirrored scale handles the sign)
                 melatowoin$pawsModel.renderPaws(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l1)), light, OverlayTexture.NO_OVERLAY, main[0],   main[1],   main[2],   1f);
                 melatowoin$pawsModel.renderPaws(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(l2)), light, OverlayTexture.NO_OVERLAY, accent[0], accent[1], accent[2], 1f);
             }

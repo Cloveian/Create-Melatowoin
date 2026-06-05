@@ -35,23 +35,8 @@ public class MelatowoinFabricClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(PawsModel.LAYER_LOCATION,     PawsModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ToeBeansModel.LAYER_LOCATION, ToeBeansModel::createBodyLayer);
 
-        // Hook for first-person paw rendering when paws are in the Accessories hand slot
-        AccessoriesSlotHelper.findPawsInAccessories = player -> {
-            var cap = AccessoriesCapability.get(player);
-            if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var container = cap.getContainers().get("hand");
-            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var stacks = container.getAccessories();
-            for (int i = 0; i < stacks.getContainerSize(); i++) {
-                var s = stacks.getItem(i);
-                if (s.getItem() instanceof DyeableEquipmentItem d
-                        && d.getEquipType() == DyeableEquipmentItem.EquipType.PAWS) return s;
-            }
-            return net.minecraft.world.item.ItemStack.EMPTY;
-        };
-
-        // (findToeBeansInAccessories is registered in MelatowoinFabric.onInitialize so it
-        // works on dedicated servers too — see powder-snow walking)
+        // All Accessories find* hooks are registered in MelatowoinFabric.onInitialize
+        // so they work on dedicated servers too.
 
         // Register projectile renderers
         EntityRendererRegistry.register(ModEntityTypes.CYAN_PROJECTILE.get(), ctx -> new ThrownItemRenderer<>(ctx));

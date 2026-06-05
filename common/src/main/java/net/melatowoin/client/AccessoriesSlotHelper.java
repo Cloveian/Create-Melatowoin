@@ -10,6 +10,8 @@ import java.util.function.Function;
  * importing Accessories directly. Fabric/Forge client init registers the impl.
  */
 public class AccessoriesSlotHelper {
+    public static Function<Player, ItemStack> findCatEarsInAccessories = p -> ItemStack.EMPTY;
+    public static Function<Player, ItemStack> findTailInAccessories = p -> ItemStack.EMPTY;
     public static Function<Player, ItemStack> findPawsInAccessories = p -> ItemStack.EMPTY;
     public static Function<Player, ItemStack> findToeBeansInAccessories = p -> ItemStack.EMPTY;
 }
