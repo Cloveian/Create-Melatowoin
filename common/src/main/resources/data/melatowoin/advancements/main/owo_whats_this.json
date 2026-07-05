@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": { "item": "melatowoin:fur" },
+    "title": { "translate": "advancement.melatowoin.owo_whats_this.title" },
+    "description": { "translate": "advancement.melatowoin.owo_whats_this.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/block/sculk.png"
+  },
+  "criteria": {
+    "obtain_fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["melatowoin:fur"] }] }
+    }
+  }
+}

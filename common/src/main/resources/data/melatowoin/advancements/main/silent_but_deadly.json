@@ -1,0 +1,17 @@
+{
+  "parent": "melatowoin:main/toe_beans",
+  "display": {
+    "icon": { "item": "minecraft:sculk_sensor" },
+    "title": { "translate": "advancement.melatowoin.silent_but_deadly.title" },
+    "description": { "translate": "advancement.melatowoin.silent_but_deadly.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "passed_sculk": {
+      "trigger": "melatowoin:silent_sculk_pass"
+    }
+  }
+}

@@ -2,12 +2,18 @@ package net.melatowoin.mixin.client;
 
 import net.melatowoin.MelatowoinConfig;
 import net.melatowoin.client.CatSetCheck;
+import net.melatowoin.client.ClientSoundHints;
 import net.melatowoin.client.LocalPlayerSoundMarker;
+import net.melatowoin.client.SoundKind;
+import net.melatowoin.network.SoundSourceHintPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,21 +23,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Scales the volume of player-sourced sounds while wearing the matching cat
  * pieces, governed by {@link MelatowoinConfig#getFullSetSoundReduction()}.
  *
- *  - WALKING-class sounds (step, swim, splash, fall, jump): muted by Toe Beans.
- *  - HAND-class sounds (open/close, eat/drink, burp):       muted by Paws.
- *  - OTHER sounds (hurt, pickup, arrow shoot, level-up …):  muted only by the
- *    full set.
- *  - EXCLUDED sounds (place/break, goat horn, fuse, explode, blast, resonate,
- *    bell) are NEVER muted — they intentionally line up with the game events
- *    that still trigger sculk sensors through the full set.
- *
- * Only sounds within ~2 blocks of the local player are touched, so other
- * players' / mobs' actions are unaffected.
+ * Source identification — in order of trust:
+ *   1. {@link ClientSoundHints} — authoritative server hint identifying the
+ *      causing entity. Sent by the server alongside the standard sound packet
+ *      for any sound triggered inside a player action handler.
+ *   2. {@link LocalPlayerSoundMarker#isNotLocal()} — packet-level marker for
+ *      entity-bound sound packets whose entity id is not us.
+ *   3. {@link LocalPlayerSoundMarker#isLocal()}    — packet-level marker for
+ *      entity-bound sound packets whose entity id is us, or the local
+ *      {@code Entity.playSound} emit chain.
+ *   4. Position-only fallback: within ~2 blocks of the player AND no other
+ *      LivingEntity sitting at the sound position.
  */
 @Mixin(AbstractSoundInstance.class)
 public class MixinSoundInstanceMuffle {
-
-    private enum Kind { WALKING, HAND, EXCLUDED, OTHER }
 
     @Inject(method = "getVolume", at = @At("RETURN"), cancellable = true)
     private void melatowoin$catMuffle(CallbackInfoReturnable<Float> cir) {
@@ -43,28 +48,70 @@ public class MixinSoundInstanceMuffle {
         if (reduction <= 0.0) return;
 
         SoundInstance self = (SoundInstance) (Object) this;
-        // Definite-source path: we're inside Entity.playSound called by the local
-        // player (footsteps, eating, jumping, …). Distance is irrelevant.
-        // Fallback: position within ~2 blocks of the player, for server-sent
-        // sounds (hurt, level-up, etc.) that can't be tagged at emit time.
-        if (!LocalPlayerSoundMarker.active()) {
+        ResourceLocation soundLoc = self.getLocation();
+        if (soundLoc == null) return;
+
+        boolean knownLocal = false;
+        ClientSoundHints.Hint hint = ClientSoundHints.lookup(self.getX(), self.getY(), self.getZ(), soundLoc);
+
+        // 1. Server-authoritative hint.
+        if (hint != null) {
+            if (hint.sourceEntityId() != player.getId()) return;  // server says it's someone else
+            knownLocal = true;
+        }
+
+        // 2. Entity-bound packet says it's not us.
+        if (!knownLocal && LocalPlayerSoundMarker.isNotLocal()) return;
+
+        // 3. Entity-bound packet or client emit chain says it's us.
+        if (!knownLocal && LocalPlayerSoundMarker.isLocal()) {
+            knownLocal = true;
+        }
+
+        // 4. Position-only fallback for sounds the server didn't hint about
+        //    (e.g. levelEvent-driven sounds, redstone-driven sounds at the
+        //    player's position).
+        if (!knownLocal) {
             double dx = self.getX() - player.getX();
             double dy = self.getY() - player.getY();
             double dz = self.getZ() - player.getZ();
             if (dx * dx + dy * dy + dz * dz > 4.0) return;
+
+            Level level = player.level();
+            if (level != null) {
+                AABB box = new AABB(
+                        self.getX() - 0.5, self.getY() - 0.5, self.getZ() - 0.5,
+                        self.getX() + 0.5, self.getY() + 0.5, self.getZ() + 0.5);
+                if (!level.getEntitiesOfClass(LivingEntity.class, box, e -> e != player).isEmpty()) {
+                    return;
+                }
+            }
         }
 
-        ResourceLocation loc = self.getLocation();
-        if (loc == null) return;
-        Kind kind = classify(loc.getPath());
-        if (kind == Kind.EXCLUDED) return;
+        SoundKind kind = classify(soundLoc.getPath());
+        if (kind == SoundKind.EXCLUDED) return;
 
+        // Server hint carries the wearer's equipment snapshot; use it where present
+        // to bypass any client-side Accessories sync lag. Fall back to local
+        // CatSetCheck for unhinted (distance-fallback) cases.
         boolean reduce;
-        switch (kind) {
-            case WALKING -> reduce = CatSetCheck.hasToeBeans(player);
-            case HAND    -> reduce = CatSetCheck.hasPaws(player);
-            case OTHER   -> reduce = CatSetCheck.hasFullSet(player);
-            default      -> reduce = false;
+        if (hint != null) {
+            switch (kind) {
+                case WALKING -> reduce = hint.hasFlag(SoundSourceHintPacket.FLAG_TOE_BEANS);
+                case HAND    -> reduce = hint.hasFlag(SoundSourceHintPacket.FLAG_PAWS);
+                case OTHER   -> reduce = hint.hasFlag(SoundSourceHintPacket.FLAG_CAT_EARS)
+                                     && hint.hasFlag(SoundSourceHintPacket.FLAG_TAIL)
+                                     && hint.hasFlag(SoundSourceHintPacket.FLAG_PAWS)
+                                     && hint.hasFlag(SoundSourceHintPacket.FLAG_TOE_BEANS);
+                default      -> reduce = false;
+            }
+        } else {
+            switch (kind) {
+                case WALKING -> reduce = CatSetCheck.hasToeBeans(player);
+                case HAND    -> reduce = CatSetCheck.hasPaws(player);
+                case OTHER   -> reduce = CatSetCheck.hasFullSet(player);
+                default      -> reduce = false;
+            }
         }
         if (!reduce) return;
 
@@ -72,28 +119,28 @@ public class MixinSoundInstanceMuffle {
         cir.setReturnValue((float) (vol * (1.0 - reduction)));
     }
 
-    private static Kind classify(String path) {
-        // ── EXCLUDED — matches the GameEvent allow-list so sounds match sculk behavior ──
-        if (path.startsWith("item.goat_horn.")) return Kind.EXCLUDED;
-        if (path.contains("tnt.primed") || path.endsWith(".fuse")) return Kind.EXCLUDED;
-        if (path.contains("explode") || path.contains(".blast")) return Kind.EXCLUDED;
-        if (path.contains("resonate") || path.startsWith("block.bell.")) return Kind.EXCLUDED;
+    private static SoundKind classify(String path) {
+        // ── EXCLUDED ──
+        if (path.startsWith("item.goat_horn.")) return SoundKind.EXCLUDED;
+        if (path.contains("tnt.primed") || path.endsWith(".fuse")) return SoundKind.EXCLUDED;
+        if (path.contains("explode") || path.contains(".blast")) return SoundKind.EXCLUDED;
+        if (path.contains("resonate") || path.startsWith("block.bell.")) return SoundKind.EXCLUDED;
         if (path.startsWith("block.")
                 && (path.endsWith(".place") || path.endsWith(".break") || path.endsWith(".destroy"))) {
-            return Kind.EXCLUDED;
+            return SoundKind.EXCLUDED;
         }
 
         // ── WALKING — Toe Beans ──
-        if (path.endsWith(".step")) return Kind.WALKING;
-        if (path.contains(".splash") || path.contains(".swim")) return Kind.WALKING;
-        if (path.contains(".fall") || path.contains("jump")) return Kind.WALKING;
+        if (path.endsWith(".step")) return SoundKind.WALKING;
+        if (path.contains(".splash") || path.contains(".swim")) return SoundKind.WALKING;
+        if (path.contains(".fall") || path.contains("jump")) return SoundKind.WALKING;
 
         // ── HAND — Paws ──
-        if (path.endsWith(".open") || path.endsWith(".close")) return Kind.HAND;
-        if (path.endsWith(".eat") || path.endsWith(".drink")) return Kind.HAND;
-        if (path.contains("generic.eat") || path.contains("generic.drink")) return Kind.HAND;
-        if (path.equals("entity.player.burp")) return Kind.HAND;
+        if (path.endsWith(".open") || path.endsWith(".close")) return SoundKind.HAND;
+        if (path.endsWith(".eat") || path.endsWith(".drink")) return SoundKind.HAND;
+        if (path.contains("generic.eat") || path.contains("generic.drink")) return SoundKind.HAND;
+        if (path.equals("entity.player.burp")) return SoundKind.HAND;
 
-        return Kind.OTHER;
+        return SoundKind.OTHER;
     }
 }

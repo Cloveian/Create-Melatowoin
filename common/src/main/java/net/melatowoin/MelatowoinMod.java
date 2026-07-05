@@ -1,7 +1,12 @@
 package net.melatowoin;
 
+import net.melatowoin.advancements.ModCriteria;
 import net.melatowoin.event.CommonEventHandlers;
 import net.melatowoin.network.EepyScreenPacket;
+import net.melatowoin.network.SoundSourceHintPacket;
+import net.melatowoin.network.WearerConfigC2SPacket;
+import net.melatowoin.network.WearerConfigS2CPacket;
+import net.melatowoin.server.WearerConfigStore;
 import net.melatowoin.registry.*;
 import net.melatowoin.registry.ModRecipes;
 import org.slf4j.Logger;
@@ -25,6 +30,23 @@ public class MelatowoinMod {
         ModCreativeTab.register();
         ModGameRules.register();
         EepyScreenPacket.register();
+        SoundSourceHintPacket.register();
+        WearerConfigC2SPacket.register();
+        WearerConfigS2CPacket.register();
+        ModCriteria.init();
         CommonEventHandlers.register();
+
+        // When a player joins the server, push every known config down to them
+        // so they see everyone correctly from the moment they spawn in. When
+        // they leave, drop their entry to keep the store from growing.
+        dev.architectury.event.events.common.PlayerEvent.PLAYER_JOIN.register(serverPlayer -> {
+            for (var entry : WearerConfigStore.all().entrySet()) {
+                WearerConfigS2CPacket.sendToPlayer(serverPlayer,
+                        new WearerConfigS2CPacket(entry.getKey(), entry.getValue()));
+            }
+        });
+        dev.architectury.event.events.common.PlayerEvent.PLAYER_QUIT.register(serverPlayer -> {
+            WearerConfigStore.remove(serverPlayer.getUUID());
+        });
     }
 }

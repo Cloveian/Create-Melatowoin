@@ -1,0 +1,17 @@
+{
+  "parent": "melatowoin:main/paws",
+  "display": {
+    "icon": { "item": "minecraft:chest" },
+    "title": { "translate": "advancement.melatowoin.cat_burglar.title" },
+    "description": { "translate": "advancement.melatowoin.cat_burglar.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "silent_open": {
+      "trigger": "melatowoin:silent_chest_open"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "parent": "melatowoin:main/we_need_to_cook",
+  "display": {
+    "icon": { "item": "melatowoin:chloroform_bucket" },
+    "title": { "translate": "advancement.melatowoin.dont_drink_that.title" },
+    "description": { "translate": "advancement.melatowoin.dont_drink_that.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_chloroform_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["melatowoin:chloroform_bucket"] }] }
+    }
+  }
+}

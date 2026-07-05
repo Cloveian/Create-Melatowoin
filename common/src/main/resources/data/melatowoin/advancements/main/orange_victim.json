@@ -1,0 +1,17 @@
+{
+  "parent": "melatowoin:main/owo_whats_this",
+  "display": {
+    "icon": { "item": "melatowoin:orangeable" },
+    "title": { "translate": "advancement.melatowoin.orange_victim.title" },
+    "description": { "translate": "advancement.melatowoin.orange_victim.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "got_hit": {
+      "trigger": "melatowoin:hit_by_orange"
+    }
+  }
+}

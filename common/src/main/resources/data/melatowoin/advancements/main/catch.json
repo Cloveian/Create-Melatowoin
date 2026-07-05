@@ -1,0 +1,17 @@
+{
+  "parent": "melatowoin:main/eepy_time",
+  "display": {
+    "icon": { "item": "melatowoin:orange_arrow" },
+    "title": { "translate": "advancement.melatowoin.catch.title" },
+    "description": { "translate": "advancement.melatowoin.catch.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "applied_change": {
+      "trigger": "melatowoin:applied_change_to_other"
+    }
+  }
+}

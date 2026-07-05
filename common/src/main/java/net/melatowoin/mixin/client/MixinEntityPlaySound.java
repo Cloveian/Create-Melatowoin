@@ -23,14 +23,14 @@ public class MixinEntityPlaySound {
     @Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"))
     private void melatowoin$markLocalPlayer(SoundEvent sound, float volume, float pitch, CallbackInfo ci) {
         if (melatowoin$isLocalPlayer()) {
-            LocalPlayerSoundMarker.enter();
+            LocalPlayerSoundMarker.enterLocal();
         }
     }
 
     @Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("RETURN"))
     private void melatowoin$unmarkLocalPlayer(SoundEvent sound, float volume, float pitch, CallbackInfo ci) {
         if (melatowoin$isLocalPlayer()) {
-            LocalPlayerSoundMarker.exit();
+            LocalPlayerSoundMarker.exitLocal();
         }
     }
 

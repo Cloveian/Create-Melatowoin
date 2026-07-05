@@ -1,0 +1,18 @@
+{
+  "parent": "melatowoin:main/owo_whats_this",
+  "display": {
+    "icon": { "item": "melatowoin:ca" },
+    "title": { "translate": "advancement.melatowoin.we_need_to_cook.title" },
+    "description": { "translate": "advancement.melatowoin.we_need_to_cook.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_ca": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["melatowoin:ca"] }] }
+    }
+  }
+}
