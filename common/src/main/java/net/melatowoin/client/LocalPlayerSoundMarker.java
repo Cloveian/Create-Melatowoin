@@ -1,26 +1,34 @@
 package net.melatowoin.client;
 
 /**
- * Tracks whether we're currently inside a call to {@code Entity.playSound}
- * dispatched by the local player. Set by {@code MixinEntityPlaySound} at HEAD
- * and cleared at RETURN; the sound-volume mixin reads it to know — without
- * relying on a distance heuristic — that a sound is definitely the local
- * player's.
+ * Three-state marker that tells the volume mixin who emitted the sound about
+ * to be processed:
  *
- * <p>Uses a static depth counter because Minecraft processes
- * {@code Entity.playSound → Level.playSound → SoundManager.play →
- * SoundInstance.getVolume()} synchronously on the render thread. The depth
- * tolerates the (rare) case where one playSound triggers another inside the
- * same frame.
+ *   LOCAL     — we are inside an emit path known to be the local player
+ *               (their own {@code Entity.playSound}, or a server packet whose
+ *               entity id matches their entity id). Apply muffling.
+ *   NOT_LOCAL — we are inside an emit path for a known *other* entity (a
+ *               server packet whose entity id is some mob, another player,
+ *               etc.). Never muffle.
+ *   NONE      — no information; fall back to the distance heuristic and
+ *               whatever entity-proximity check the caller wants to apply.
+ *
+ * Two separate counters tolerate the (rare) case where one emit recurses into
+ * another. Sound processing in Minecraft is synchronous on the render thread,
+ * so plain ints are safe.
  */
 public final class LocalPlayerSoundMarker {
-    private static int depth = 0;
+
+    private static int localDepth    = 0;
+    private static int notLocalDepth = 0;
 
     private LocalPlayerSoundMarker() {}
 
-    public static void enter() { depth++; }
+    public static void enterLocal()    { localDepth++; }
+    public static void exitLocal()     { if (localDepth    > 0) localDepth--;    }
+    public static void enterNotLocal() { notLocalDepth++; }
+    public static void exitNotLocal()  { if (notLocalDepth > 0) notLocalDepth--; }
 
-    public static void exit()  { if (depth > 0) depth--; }
-
-    public static boolean active() { return depth > 0; }
+    public static boolean isLocal()    { return localDepth    > 0; }
+    public static boolean isNotLocal() { return notLocalDepth > 0; }
 }

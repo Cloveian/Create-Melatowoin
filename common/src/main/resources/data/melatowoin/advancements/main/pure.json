@@ -1,0 +1,18 @@
+{
+  "parent": "melatowoin:main/we_need_to_cook",
+  "display": {
+    "icon": { "item": "melatowoin:purefurryness" },
+    "title": { "translate": "advancement.melatowoin.pure.title" },
+    "description": { "translate": "advancement.melatowoin.pure.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_pure": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["melatowoin:purefurryness"] }] }
+    }
+  }
+}

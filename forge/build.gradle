@@ -7,6 +7,10 @@ architectury {
     forge()
 }
 
+base {
+    archivesName = "create-melatowoin-forge"
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
     forge {

@@ -1,0 +1,25 @@
+{
+  "parent": "melatowoin:main/paws",
+  "display": {
+    "icon": { "item": "melatowoin:cat_ears" },
+    "title": { "translate": "advancement.melatowoin.full_fursuit.title" },
+    "description": { "translate": "advancement.melatowoin.full_fursuit.description" },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "wear_all_four": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["melatowoin:cat_ears"] },
+          { "items": ["melatowoin:tail"] },
+          { "items": ["melatowoin:paws"] },
+          { "items": ["melatowoin:toe_beans"] }
+        ]
+      }
+    }
+  }
+}

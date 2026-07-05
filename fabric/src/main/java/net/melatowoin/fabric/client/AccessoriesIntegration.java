@@ -59,7 +59,10 @@ public class AccessoriesIntegration {
             final float headTop  = 8f / 16f;
             // Shift ears 1 pixel higher when a helmet occupies the head armor slot
             // so the ears sit on top of the helmet instead of clipping through it.
-            float helmetLift = reference.entity().getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD).isEmpty()
+            // Whether to lift the ears under a helmet is the *wearer's* choice, so look it up
+            // on the entity being rendered rather than reading our own config.
+            boolean lift = net.melatowoin.client.WearerConfigs.get(reference.entity()).liftEars();
+            float helmetLift = (!lift || reference.entity().getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD).isEmpty())
                     ? 0f : 1f / 16f;
             matrices.translate(0.0, -headTop - helmetLift, 0.0);
             matrices.scale(earScale, earScale, earScale);

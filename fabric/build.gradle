@@ -7,6 +7,10 @@ architectury {
     fabric()
 }
 
+base {
+    archivesName = "create-melatowoin-fabric"
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }

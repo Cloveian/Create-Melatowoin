@@ -51,6 +51,31 @@ public class MelatowoinForgeClient {
                         }
                     });
                 });
+
+        // Register Sound source hint network packet receiver (S2C)
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, net.melatowoin.network.SoundSourceHintPacket.ID,
+                (buf, context) -> {
+                    net.melatowoin.network.SoundSourceHintPacket packet =
+                            new net.melatowoin.network.SoundSourceHintPacket(buf);
+                    context.queue(() -> net.melatowoin.client.ClientSoundHints.handle(packet));
+                });
+
+        // Register Wearer render config (S2C) — every other player's preferences
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, net.melatowoin.network.WearerConfigS2CPacket.ID,
+                (buf, context) -> {
+                    net.melatowoin.network.WearerConfigS2CPacket packet =
+                            new net.melatowoin.network.WearerConfigS2CPacket(buf);
+                    context.queue(() -> net.melatowoin.client.WearerConfigs.put(packet.playerId, packet.config));
+                });
+
+        // FORGE-bus listeners (ClientPlayerNetworkEvent doesn't fire on the MOD bus):
+        // send our render config when we join a server; clear cache when we leave.
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(
+                (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingIn e) ->
+                        net.melatowoin.MelatowoinConfig.sendToServer());
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(
+                (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) ->
+                        net.melatowoin.client.WearerConfigs.clear());
     }
 
     @SubscribeEvent

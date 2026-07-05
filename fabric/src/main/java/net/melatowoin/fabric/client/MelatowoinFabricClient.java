@@ -79,6 +79,32 @@ public class MelatowoinFabricClient implements ClientModInitializer {
                     });
                 });
 
+        // Register network receiver for Sound source hint packet (S2C)
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, net.melatowoin.network.SoundSourceHintPacket.ID,
+                (buf, context) -> {
+                    net.melatowoin.network.SoundSourceHintPacket packet =
+                            new net.melatowoin.network.SoundSourceHintPacket(buf);
+                    context.queue(() -> net.melatowoin.client.ClientSoundHints.handle(packet));
+                });
+
+        // Register network receiver for Wearer render config (S2C broadcasts)
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, net.melatowoin.network.WearerConfigS2CPacket.ID,
+                (buf, context) -> {
+                    net.melatowoin.network.WearerConfigS2CPacket packet =
+                            new net.melatowoin.network.WearerConfigS2CPacket(buf);
+                    context.queue(() -> net.melatowoin.client.WearerConfigs.put(packet.playerId, packet.config));
+                });
+
+        // On joining a server (or singleplayer integrated server), upload our
+        // current render config so other clients see us correctly. Also wipe
+        // the cache on disconnect so stale entries don't bleed across worlds.
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            net.melatowoin.MelatowoinConfig.sendToServer();
+        });
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            net.melatowoin.client.WearerConfigs.clear();
+        });
+
         // Tick: keep Eepy screen open each client tick while the effect is active
         ClientTickEvents.END_CLIENT_TICK.register(client -> EepyScreen.onClientTick());
 

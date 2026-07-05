@@ -52,15 +52,26 @@ public class MixinContainerGameEvent {
             if (melatowoin$alwaysAllowed(event)) return;
             if (event == GameEvent.STEP && melatowoin$standingOnSculkSensor((Object) source.level(), pos)) return;
             ci.cancel();
+            if (event == GameEvent.STEP && player instanceof net.minecraft.server.level.ServerPlayer sp
+                    && melatowoin$sculkListenerNearby(sp, pos)) {
+                net.melatowoin.advancements.ModCriteria.SILENT_SCULK_PASS.trigger(sp);
+            }
             return;
         }
 
         if ((event == GameEvent.CONTAINER_OPEN || event == GameEvent.CONTAINER_CLOSE) && hasPaws) {
             ci.cancel();
+            if (event == GameEvent.CONTAINER_OPEN && player instanceof net.minecraft.server.level.ServerPlayer sp) {
+                net.melatowoin.advancements.ModCriteria.SILENT_CHEST_OPEN.trigger(sp);
+            }
             return;
         }
         if ((event == GameEvent.STEP || event == GameEvent.HIT_GROUND) && hasToeBeans) {
             ci.cancel();
+            if (event == GameEvent.STEP && player instanceof net.minecraft.server.level.ServerPlayer sp
+                    && melatowoin$sculkListenerNearby(sp, pos)) {
+                net.melatowoin.advancements.ModCriteria.SILENT_SCULK_PASS.trigger(sp);
+            }
         }
     }
 
@@ -78,6 +89,12 @@ public class MixinContainerGameEvent {
             || event == GameEvent.INSTRUMENT_PLAY
             || event == GameEvent.PRIME_FUSE
             || event == GameEvent.EXPLODE
+            // SCULK_SENSOR_TENDRILS_CLICKING: a sensor's broadcast that lets nearby
+            // shriekers react to the same vibration. SHRIEK: the shrieker's own
+            // propagation. Both carry the original player as source, so without
+            // these the sensor → shrieker → warden chain breaks for full-set wearers.
+            || event == GameEvent.SCULK_SENSOR_TENDRILS_CLICKING
+            || event == GameEvent.SHRIEK
             || event.getName().startsWith("resonate_");
     }
 
@@ -90,40 +107,52 @@ public class MixinContainerGameEvent {
         return level.getBlockState(at).getBlock() instanceof SculkSensorBlock;
     }
 
+    /** Cheap chunk-local scan for sculk sensors/shriekers — used to gate the silent-sculk advancement. */
+    private static boolean melatowoin$sculkListenerNearby(net.minecraft.server.level.ServerPlayer sp, Vec3 pos) {
+        net.minecraft.world.level.Level level = sp.level();
+        for (var be : level.getChunkAt(BlockPos.containing(pos)).getBlockEntities().values()) {
+            if (be instanceof net.minecraft.world.level.block.entity.SculkSensorBlockEntity
+                    || be instanceof net.minecraft.world.level.block.entity.SculkShriekerBlockEntity) {
+                if (be.getBlockPos().distSqr(BlockPos.containing(pos)) <= 64.0) return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean melatowoin$hasCatEarsEquipped(Player player) {
         if (DyeableEquipmentItem.isType(player.getItemBySlot(EquipmentSlot.HEAD),
                 DyeableEquipmentItem.EquipType.CAT_EARS)) return true;
-        return melatowoin$accessoriesContainerHas(player, "hat", DyeableEquipmentItem.EquipType.CAT_EARS);
+        return melatowoin$accessoriesHas(player, DyeableEquipmentItem.EquipType.CAT_EARS);
     }
 
     private static boolean melatowoin$hasTailEquipped(Player player) {
         if (DyeableEquipmentItem.isType(player.getItemBySlot(EquipmentSlot.LEGS),
                 DyeableEquipmentItem.EquipType.TAIL)) return true;
-        return melatowoin$accessoriesContainerHas(player, "belt", DyeableEquipmentItem.EquipType.TAIL);
+        return melatowoin$accessoriesHas(player, DyeableEquipmentItem.EquipType.TAIL);
     }
 
     private static boolean melatowoin$hasPawsEquipped(Player player) {
         if (DyeableEquipmentItem.isType(player.getItemBySlot(EquipmentSlot.CHEST),
                 DyeableEquipmentItem.EquipType.PAWS)) return true;
-        return melatowoin$accessoriesContainerHas(player, "hand", DyeableEquipmentItem.EquipType.PAWS);
+        return melatowoin$accessoriesHas(player, DyeableEquipmentItem.EquipType.PAWS);
     }
 
     private static boolean melatowoin$hasToeBeansEquipped(Player player) {
         if (DyeableEquipmentItem.isType(player.getItemBySlot(EquipmentSlot.FEET),
                 DyeableEquipmentItem.EquipType.TOE_BEANS)) return true;
-        return melatowoin$accessoriesContainerHas(player, "shoes", DyeableEquipmentItem.EquipType.TOE_BEANS);
+        return melatowoin$accessoriesHas(player, DyeableEquipmentItem.EquipType.TOE_BEANS);
     }
 
-    private static boolean melatowoin$accessoriesContainerHas(Player player, String slotName,
-                                                              DyeableEquipmentItem.EquipType type) {
+    /** Scans every Accessories container for the given cat-piece type, regardless of slot name. */
+    private static boolean melatowoin$accessoriesHas(Player player, DyeableEquipmentItem.EquipType type) {
         var cap = AccessoriesCapability.get(player);
         if (cap == null) return false;
-        var container = cap.getContainers().get(slotName);
-        if (container == null) return false;
-        var stacks = container.getAccessories();
-        for (int i = 0; i < stacks.getContainerSize(); i++) {
-            ItemStack s = stacks.getItem(i);
-            if (DyeableEquipmentItem.isType(s, type)) return true;
+        for (var container : cap.getContainers().values()) {
+            var stacks = container.getAccessories();
+            for (int i = 0; i < stacks.getContainerSize(); i++) {
+                ItemStack s = stacks.getItem(i);
+                if (DyeableEquipmentItem.isType(s, type)) return true;
+            }
         }
         return false;
     }

@@ -50,7 +50,7 @@ public class ModItems {
             ITEMS.register("fabrics", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistrySupplier<Item> FABRIC =
-            ITEMS.register("fabric", () -> new Item(new Item.Properties().stacksTo(1)) {
+            ITEMS.register("fabric", () -> new Item(new Item.Properties().stacksTo(16)) {
                 @Override
                 public void appendHoverText(ItemStack stack, net.minecraft.world.level.Level level,
                                             java.util.List<Component> list, TooltipFlag flag) {

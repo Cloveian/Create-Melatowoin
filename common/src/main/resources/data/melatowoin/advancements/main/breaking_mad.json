@@ -1,0 +1,25 @@
+{
+  "parent": "melatowoin:main/we_need_to_cook",
+  "display": {
+    "icon": { "item": "melatowoin:chloroform_bucket" },
+    "title": { "translate": "advancement.melatowoin.breaking_mad.title" },
+    "description": { "translate": "advancement.melatowoin.breaking_mad.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "all_four_buckets": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["melatowoin:acetone_bucket"] },
+          { "items": ["melatowoin:bleach_bucket"] },
+          { "items": ["melatowoin:chloroform_bucket"] },
+          { "items": ["melatowoin:vinegar_bucket"] }
+        ]
+      }
+    }
+  }
+}

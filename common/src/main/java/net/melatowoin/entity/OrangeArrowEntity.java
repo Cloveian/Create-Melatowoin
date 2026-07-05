@@ -30,6 +30,15 @@ public class OrangeArrowEntity extends AbstractArrow {
         super.onHitEntity(result);
         if (!level().isClientSide() && result.getEntity() instanceof LivingEntity living) {
             OrangeProjectileEntity.onHitExtra.accept(living, sauceStack);
+            if (living instanceof net.minecraft.world.entity.player.Player target) {
+                if (target instanceof net.minecraft.server.level.ServerPlayer sp) {
+                    net.melatowoin.advancements.ModCriteria.HIT_BY_ORANGE.trigger(sp);
+                }
+                if (this.getOwner() instanceof net.minecraft.server.level.ServerPlayer shooter
+                        && shooter != target) {
+                    net.melatowoin.advancements.ModCriteria.APPLIED_CHANGE_TO_OTHER.trigger(shooter);
+                }
+            }
         }
     }
 

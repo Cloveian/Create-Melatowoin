@@ -7,7 +7,8 @@
     "MixinContainerGameEvent"
   ],
   "client": [
-    "MixinAccessoriesRenderLayer"
+    "MixinAccessoriesRenderLayer",
+    "MixinClientPacketListenerSound"
   ],
   "injectors": {
     "defaultRequire": 1

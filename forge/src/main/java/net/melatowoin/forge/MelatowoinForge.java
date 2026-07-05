@@ -40,10 +40,10 @@ public class MelatowoinForge {
             // Server-relevant hooks: let common mixins (powder-snow walking, freezing,
             // full-set sound suppression) see each piece in its Accessories slot.
             // Registered here instead of in the client init so dedicated servers see them too.
-            AccessoriesSlotHelper.findCatEarsInAccessories  = accessoryFinder("hat",   DyeableEquipmentItem.EquipType.CAT_EARS);
-            AccessoriesSlotHelper.findTailInAccessories     = accessoryFinder("belt",  DyeableEquipmentItem.EquipType.TAIL);
-            AccessoriesSlotHelper.findPawsInAccessories     = accessoryFinder("hand",  DyeableEquipmentItem.EquipType.PAWS);
-            AccessoriesSlotHelper.findToeBeansInAccessories = accessoryFinder("shoes", DyeableEquipmentItem.EquipType.TOE_BEANS);
+            AccessoriesSlotHelper.findCatEarsInAccessories  = accessoryFinder(DyeableEquipmentItem.EquipType.CAT_EARS);
+            AccessoriesSlotHelper.findTailInAccessories     = accessoryFinder(DyeableEquipmentItem.EquipType.TAIL);
+            AccessoriesSlotHelper.findPawsInAccessories     = accessoryFinder(DyeableEquipmentItem.EquipType.PAWS);
+            AccessoriesSlotHelper.findToeBeansInAccessories = accessoryFinder(DyeableEquipmentItem.EquipType.TOE_BEANS);
         }
 
         // Client-only: register the Mod Menu config screen factory so this mod
@@ -56,17 +56,23 @@ public class MelatowoinForge {
         // are discovered automatically by Forge via annotation scanning.
     }
 
+    /**
+     * Scans every Accessories container for a stack of the given cat-piece type.
+     * Different modpacks (Aether, etc.) put items in different slot names, so
+     * looking up by a fixed slot name misses cases. Scanning the whole container
+     * map is bounded and cheap.
+     */
     private static java.util.function.Function<net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack>
-            accessoryFinder(String slotName, DyeableEquipmentItem.EquipType type) {
+            accessoryFinder(DyeableEquipmentItem.EquipType type) {
         return player -> {
             var cap = AccessoriesCapability.get(player);
             if (cap == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var container = cap.getContainers().get(slotName);
-            if (container == null) return net.minecraft.world.item.ItemStack.EMPTY;
-            var stacks = container.getAccessories();
-            for (int i = 0; i < stacks.getContainerSize(); i++) {
-                var s = stacks.getItem(i);
-                if (s.getItem() instanceof DyeableEquipmentItem d && d.getEquipType() == type) return s;
+            for (var container : cap.getContainers().values()) {
+                var stacks = container.getAccessories();
+                for (int i = 0; i < stacks.getContainerSize(); i++) {
+                    var s = stacks.getItem(i);
+                    if (s.getItem() instanceof DyeableEquipmentItem d && d.getEquipType() == type) return s;
+                }
             }
             return net.minecraft.world.item.ItemStack.EMPTY;
         };
