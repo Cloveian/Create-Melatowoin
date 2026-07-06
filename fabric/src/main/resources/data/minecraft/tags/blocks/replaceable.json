@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "melatowoin:acetone_block",
+    "melatowoin:bleach_block",
+    "melatowoin:chloroform_block",
+    "melatowoin:vinegar_block"
+  ]
+}
